@@ -1,0 +1,20 @@
+language: php
+
+php:
+  - 5.4
+  - 5.5
+  - 5.6
+
+before_install:
+  - composer self-update
+  - composer create-project laravel/laravel
+  - cd ./laravel
+  - composer require hootlex/laravel-friendships dev-master
+  - composer update
+  - touch ./app/database/testing.sqlite
+  - cp ./vendor/hootlex/laravel-friendships/tests/config/database.php ./app/config/testing/
+  - cp ./vendor/hootlex/laravel-friendships/tests/config/app.php ./app/config/testing/
+  - export APP_ENV="testing"
+  - cd ./vendor/hootlex/laravel-friendships
+
+script: "phpunit"
