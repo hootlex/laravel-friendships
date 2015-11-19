@@ -16,6 +16,9 @@
             "tests/helpers.php"
         ]
     },
+    "psr-4": {
+        "Hootlex\\Friendships\\": "src/"
+    },
     "require": {
         "php": ">=5.4.0",
         "laravel/laravel": "~5.1"
