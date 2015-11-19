@@ -5,9 +5,6 @@ php:
 
 sudo: required
 
-services:
-  - mysql
-
 before_install:
   - composer install --dev --prefer-source --no-interaction
 
@@ -15,5 +12,5 @@ before_install:
 script:
 - cp src/database/migrations/2015_11_19_053825_create_friendships_table.php vendor/laravel/laravel/database/migrations/2015_11_19_053825_create_friendships_table.php
 - touch vendor/laravel/laravel/storage/database.sqlite
-- cp tests/Stub_User.php vendor/laravel/laravel/app/ User.php
+- yes | cp tests/Stub_User.php vendor/laravel/laravel/app/ User.php
 - vendor/bin/phpunit tests
