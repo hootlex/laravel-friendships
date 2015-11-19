@@ -11,4 +11,8 @@ services:
 before_install:
   - composer install --dev --prefer-source --no-interaction
 
-script: vendor/bin/phpunit tests
+
+script:
+- cp src/database/migrations/2015_11_19_053825_create_friendships_table.php vendor/laravel/laravel/database/migrations/2015_11_19_053825_create_friendships_table.php
+- touch vendor/laravel/laravel/storage/database.sqlite
+- vendor/bin/phpunit tests
