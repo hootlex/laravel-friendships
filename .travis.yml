@@ -12,9 +12,9 @@ before_install:
   - mysql -e 'create database friendships_test;'
   - composer self-update
   - composer create-project laravel/laravel
-  - cd ./laravel
-  - composer require hootlex/laravel-friendships dev-master
+  - cd /home/travis/build/hootlex/laravel-friendships/laravel
   - php artisan migrate:install
+  - composer require hootlex/laravel-friendships dev-master
   - cd ./vendor/hootlex/laravel-friendships
 
 script: "phpunit"
