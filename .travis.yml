@@ -9,6 +9,7 @@ services:
   - mysql
 
 before_install:
+
   - mysql -e 'create database friendships_test;'
   - composer self-update
   - composer create-project laravel/laravel
