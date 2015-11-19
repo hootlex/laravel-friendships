@@ -14,10 +14,7 @@ before_install:
   - composer create-project laravel/laravel
   - cd ./laravel
   - composer require hootlex/laravel-friendships dev-master
-  - composer update
-  - cp ./vendor/hootlex/laravel-friendships/tests/config/database.php ./app/config/testing/
-  - cp ./vendor/hootlex/laravel-friendships/tests/config/app.php ./app/config/testing/
-  - export APP_ENV="testing"
+  - php artisan migrate:install
   - cd ./vendor/hootlex/laravel-friendships
 
 script: "phpunit"
