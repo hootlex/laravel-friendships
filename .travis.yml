@@ -5,13 +5,16 @@ php:
 
 sudo: required
 
+services:
+  - mysql
+
 before_install:
+  - mysql -e 'create database friendships_test;'
   - composer self-update
   - composer create-project laravel/laravel
   - cd ./laravel
   - composer require hootlex/laravel-friendships dev-master
   - composer update
-  - sudo touch ./app/database/testing.sqlite
   - cp ./vendor/hootlex/laravel-friendships/tests/config/database.php ./app/config/testing/
   - cp ./vendor/hootlex/laravel-friendships/tests/config/app.php ./app/config/testing/
   - export APP_ENV="testing"

@@ -1,11 +1,18 @@
 <?php
 return array(
-    'default' => 'sqlite',
+    'default' => 'mysql',
     'connections' => array(
-        'sqlite' => array(
-            'driver'   => 'sqlite',
-            'database' => __DIR__.'/../../database/testing.sqlite',
-            'prefix'   => '',
-        ),
+        'mysql' => [
+            'driver'    => 'mysql2',
+            'host'      => '127.0.0.1',
+            'database'  => 'friendships_test',
+            'username'  => 'travis',
+            'password'  => '',
+            'charset'   => 'utf8',
+            'collation' => 'utf8_unicode_ci',
+            'prefix'    => '',
+            'strict'    => false,
+        ]
     ),
 );
+
