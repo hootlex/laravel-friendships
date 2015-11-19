@@ -6,7 +6,8 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class FriedshipsTest extends TestCase
 {
-    use DatabaseTransactions;
+    //WARNING: THIS TEST WILL REFRESH THE DATABASE so be careful
+    use DatabaseTransactions, DatabaseMigrations;
 
     /** @test */
     public function user_can_send_a_friend_request()
