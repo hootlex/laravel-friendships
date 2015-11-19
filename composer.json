@@ -13,7 +13,7 @@
             "vendor/laravel/laravel/tests/TestCase.php"
         ],
         "files": [
-            "helpers/helpers.php"
+            "tests/helpers.php"
         ]
     },
     "require": {
