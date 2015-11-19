@@ -11,6 +11,9 @@
     "autoload-dev": {
         "classmap": [
             "vendor/laravel/laravel/tests/TestCase.php"
+        ],
+        "files": [
+            "helpers/helpers.php"
         ]
     },
     "require": {
