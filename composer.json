@@ -9,6 +9,9 @@
         }
     ],
     "autoload-dev": {
+        "classmap": [
+            "tests/TestCase.php"
+        ]
     },
     "require": {
         "php": ">=5.4.0",
