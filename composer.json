@@ -13,6 +13,9 @@
             "tests/helpers.php"
         ]
     },
-    "minimum-stability": "stable",
-    "require": {}
+    "require": {
+        "php": ">=5.4.0",
+        "illuminate/support": "~5.0"
+    },
+    "minimum-stability": "stable"
 }
