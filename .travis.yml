@@ -11,4 +11,4 @@ services:
 before_install:
   - composer install --dev --prefer-source --no-interaction
 
-script: "phpunit"
+script: phpunit tests
