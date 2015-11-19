@@ -8,6 +8,11 @@
             "email": "hootlex@icloud.com"
         }
     ],
+    "autoload-dev": {
+        "files": [
+            "tests/helpers.php"
+        ]
+    },
     "minimum-stability": "stable",
     "require": {}
 }
