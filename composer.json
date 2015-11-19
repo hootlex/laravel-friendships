@@ -1,0 +1,13 @@
+{
+    "name": "hootlex/laravel-friendships",
+    "description": "This package gives Eloqent models the ability to manage their friendships.",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Hootlex",
+            "email": "hootlex@icloud.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {}
+}
