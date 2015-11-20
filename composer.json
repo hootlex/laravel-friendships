@@ -25,8 +25,8 @@
         "fzaninotto/faker": "~1.4"
     },
     "autoload": {
-        "psr-0": {
-            "Hootlex\\Friendships": "src/"
+        "psr-4": {
+            "Hootlex\\Friendships\\": "src/"
         }
     },
     "minimum-stability": "stable"
