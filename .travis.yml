@@ -6,6 +6,7 @@ php:
 sudo: required
 
 before_install:
+  - composer self-update
   - composer install --dev --prefer-source --no-interaction
 
 
