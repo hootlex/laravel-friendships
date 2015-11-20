@@ -24,5 +24,10 @@
         "phpunit/phpunit" : "5.*",
         "fzaninotto/faker": "~1.4"
     },
+    "autoload": {
+        "psr-0": {
+            "Hootlex\\Friendships": "src/"
+        }
+    },
     "minimum-stability": "stable"
 }
