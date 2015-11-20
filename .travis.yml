@@ -13,4 +13,8 @@ script:
 - cp src/database/migrations/2015_11_19_053825_create_friendships_table.php vendor/laravel/laravel/database/migrations/2015_11_19_053825_create_friendships_table.php
 - touch vendor/laravel/laravel/storage/database.sqlite
 - yes | cp tests/Stub_User.php vendor/laravel/laravel/app/User.php
+- cd vendor/laravel/laravel
+- composer install --dev --prefer-source --no-interaction
+- php artisan migrate
+- cd -
 - vendor/bin/phpunit tests
