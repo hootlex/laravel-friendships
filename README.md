@@ -29,3 +29,12 @@ Lastly you need to publish the migration and migrate the database
 ```
 php artisan vendor:publish --provider="Hootlex\Friendships\FriendshipsServiceProvider" && artisan migrate
 ```
+## Setup a Model
+```php
+use Hootlex\Friendships\Traits\Friendable;
+class User extends Model
+{
+    use Friendable;
+    ...
+}
+```
