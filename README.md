@@ -27,7 +27,7 @@ Then include the service provider inside `config/app.php`.
 Lastly you need to publish the migration and migrate the database
 
 ```
-php artisan vendor:publish --provider="Hootlex\Friendships\FriendshipsServiceProvider" && artisan migrate
+php artisan vendor:publish --provider="Hootlex\Friendships\FriendshipsServiceProvider" && php artisan migrate
 ```
 ## Setup a Model
 ```php
