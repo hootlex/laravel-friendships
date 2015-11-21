@@ -1,7 +1,7 @@
 # Laravel Friendships [![Build Status](https://travis-ci.org/hootlex/laravel-friendships.svg?branch=master)](https://travis-ci.org/hootlex/laravel-friendships)
 
 This package gives Eloqent models the ability to manage their friendships.
-###Models can:
+##Models can:
 - Send Friend Requests
 - Accept Friend Requests
 - Deny Friend Requests
@@ -39,7 +39,8 @@ class User extends Model
 }
 ```
 
-## How to use
+## How to use 
+[Check the Test file to see the package in action](https://github.com/hootlex/laravel-friendships/blob/master/tests/FriedshipsTest.php)
 
 #### Send a Friend Request
 ```php
