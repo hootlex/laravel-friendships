@@ -38,3 +38,85 @@ class User extends Model
     ...
 }
 ```
+
+## How to use
+
+#### Send a Friend Request
+```php
+$user->befriend($recipient);
+```
+
+#### Accept a Friend Request
+```php
+$user->acceptFriendRequest($recipient);
+```
+
+#### Deny a Friend Request
+```php
+$user->denyFriendRequest($recipient);
+```
+
+#### Remove Friend
+```php
+$user->unfriend($recipient);
+```
+
+#### Block a Model
+```php
+$user->blockFriend($recipient);
+```
+
+#### Unblock a Model
+```php
+$user->unblockFriend($recipient);
+```
+
+#### Check if Model is Friend with another Model
+```php
+$user->isFriendWith($recipient);
+```
+
+#### Check if Model has blocked another Model
+```php
+$user->hasBlocked($recipient);
+```
+
+#### Check if Model is blocked by another Model
+```php
+$user->isBlockedBy($recipient);
+```
+
+#### Get a single friendship
+```php
+$user->getFriendship($recipient);
+```
+
+#### Get a list of all Friendships
+```php
+$user->getAllFriendships();
+```
+
+#### Get a list of pending Friendships
+```php
+$user->getPendingFriendships();
+```
+
+#### Get a list of accepted Friendships
+```php
+$user->getAcceptedFriendships();
+```
+
+#### Get a list of denied Friendships
+```php
+$user->getDeniedFriendships();
+```
+
+#### Get a list of blocked Friendships
+```php
+$user->getBlockedFriendships();
+```
+
+#### Get a list of pending Friend Requests
+```php
+$user->getFriendRequests();
+```
