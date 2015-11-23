@@ -1,4 +1,5 @@
-# Laravel 5 Friendships [![GitHub release](https://img.shields.io/github/release/hootlex/Laravel-Friendships.svg?style=flat)](https://packagist.org/packages/hootlex/laravel-friendship) [![Build Status](https://travis-ci.org/hootlex/laravel-friendships.svg?branch=master)](https://travis-ci.org/hootlex/laravel-friendships)
+# Laravel 5 Friendships [![Build Status](https://travis-ci.org/hootlex/laravel-friendships.svg?branch=master)](https://travis-ci.org/hootlex/laravel-friendships) [![GitHubrelease](https://img.shields.io/github/release/hootlex/Laravel-Friendships.svg?style=flat)](https://packagist.org/packages/hootlex/laravel-friendship)  [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE)
+
 
 This package gives Eloqent models the ability to manage their friendships.
 ##Models can:
