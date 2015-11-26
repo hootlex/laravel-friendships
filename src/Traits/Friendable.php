@@ -11,7 +11,7 @@ trait Friendable
     /**
      * @param Model $recipient
      *
-     * @return Frienship|false
+     * @return \Hootlex\Friendships\Models\Friendship|false
      */
     public function befriend(Model $recipient)
     {
@@ -43,7 +43,7 @@ trait Friendable
     /**
      * @param Model $recipient
      *
-     * @return mixed
+     * @return bool
      */
     public function isFriendWith(Model $recipient)
     {
@@ -53,7 +53,7 @@ trait Friendable
     /**
      * @param Model $recipient
      *
-     * @return bool
+     * @return bool|int
      */
     public function acceptFriendRequest(Model $recipient)
     {
@@ -65,11 +65,10 @@ trait Friendable
     /**
      * @param Model $recipient
      *
-     * @return bool
+     * @return bool|int
      */
     public function denyFriendRequest(Model $recipient)
     {
-
         return $this->findFriendship($recipient)->update([
             'status' => Status::DENIED,
         ]);
@@ -78,7 +77,7 @@ trait Friendable
     /**
      * @param Model $recipient
      *
-     * @return Friendship
+     * @return \Hootlex\Friendships\Models\Friendship
      */
     public function blockFriend(Model $recipient)
     {
@@ -94,6 +93,8 @@ trait Friendable
 
     /**
      * @param Model $recipient
+     *
+     * @return mixed
      */
     public function unblockFriend(Model $recipient)
     {
@@ -104,7 +105,7 @@ trait Friendable
     /**
      * @param Model $recipient
      *
-     * @return mixed
+     * @return \Hootlex\Friendships\Models\Friendship
      */
     public function getFriendship(Model $recipient)
     {
@@ -113,9 +114,6 @@ trait Friendable
 
     /**
      * @return \Illuminate\Database\Eloquent\Collection
-     * @internal param int $limit
-     * @internal param null $offset
-     *
      */
     public function getAllFriendships()
     {
@@ -178,7 +176,7 @@ trait Friendable
     }
 
     /**
-     * @return mixed
+     * @return \Illuminate\Database\Eloquent\Collection
      */
     public function getFriendRequests()
     {
@@ -188,7 +186,7 @@ trait Friendable
     /**
      * @param Model $recipient
      *
-     * @return boolean
+     * @return bool
      */
     public function canBefriend($recipient)
     {
@@ -202,7 +200,7 @@ trait Friendable
     /**
      * @param Model $recipient
      *
-     * @return mixed
+     * @return \Illuminate\Database\Eloquent\Builder
      */
     private function findFriendship(Model $recipient)
     {
