@@ -42,6 +42,7 @@ class FriedshipsTest extends TestCase
         $recipient->acceptFriendRequest($sender);
 
         $this->assertTrue($recipient->isFriendWith($sender));
+        $this->assertTrue($sender->isFriendWith($recipient));
         //fr has been delete
         $this->assertCount(0, $recipient->getFriendRequests());
     }
