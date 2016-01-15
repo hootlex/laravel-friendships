@@ -13,9 +13,14 @@ class FriendshipsServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-	    $this->publishes([
-	        __DIR__.'/../src/database/migrations/' => database_path('migrations')
-	    ], 'migrations');
+        if (class_exists('CreateFriendshipsTable')) {
+            return;
+        }
+
+        $timestamp = date('Y_m_d_His', time());
+        $stub = __DIR__.'/database/migrations/create_friendships_table.php';
+        $target = database_path('migrations').'/'.$timestamp.'_create_friendships_table.php';
+        $this->publishes([$stub => $target], 'migrations');
     }
     
     /**
