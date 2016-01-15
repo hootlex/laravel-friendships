@@ -215,11 +215,12 @@ trait Friendable
     private function findFriendships($status = '%')
     {
         return Friendship::where('status', 'LIKE', $status)
-            ->where(function ($q) {
-                $q->whereSender($this);
-            })
-            ->orWhere(function ($q) {
-                $q->whereRecipient($this);
+            ->where(function ($query) {
+                $query->where(function ($q) {
+                    $q->whereSender($this);
+                })->orWhere(function ($q) {
+                    $q->whereRecipient($this);
+                });
             });
     }
 
