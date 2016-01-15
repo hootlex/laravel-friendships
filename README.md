@@ -2,6 +2,8 @@
 
 
 This package gives Eloqent models the ability to manage their friendships.
+You can easily design a Facebook like Friend System.
+
 ##Models can:
 - Send Friend Requests
 - Accept Friend Requests
