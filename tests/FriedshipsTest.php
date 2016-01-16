@@ -193,4 +193,25 @@ class FriedshipsTest extends TestCase
         $recipients[2]->blockFriend($sender);
         $this->assertCount(1, $sender->getBlockedFriendships());
     }
+
+    /** @test */
+    public function it_return_user_friends(){
+        $sender = createUser();
+        $recipients = createUser([], 4);
+
+        foreach ($recipients as $recipient) {
+            $sender->befriend($recipient);
+        }
+
+        $recipients[0]->acceptFriendRequest($sender);
+        $recipients[1]->acceptFriendRequest($sender);
+        $recipients[2]->denyFriendRequest($sender);
+
+        $this->assertCount(2, $sender->getFriends());
+        $this->assertCount(1, $recipients[1]->getFriends());
+        $this->assertCount(0, $recipients[2]->getFriends());
+        $this->assertCount(0, $recipients[3]->getFriends());
+
+        $this->containsOnlyInstancesOf(\App\User::class, $sender->getFriends());
+    }
 }
