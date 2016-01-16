@@ -184,6 +184,21 @@ trait Friendable
     }
 
     /**
+     * This method will not return Friendship models
+     * It will return the 'friends' models. ex: App\User
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function getFriends()
+    {
+        $friendships = $this->findFriendships(Status::ACCEPTED)->get(['sender_id', 'recipient_id']);
+        $recipients = $friendships->lists('recipient_id')->all();
+        $senders = $friendships->lists('sender_id')->all();
+
+        return $this->where('id', '!=', $this->getKey())->whereIn('id', array_merge($recipients, $senders))->get();
+    }
+
+    /**
      * @param Model $recipient
      *
      * @return bool
