@@ -90,6 +90,11 @@ $user->hasBlocked($recipient);
 $user->isBlockedBy($recipient);
 ```
 
+#### Get Friends (It returns a collection of friend models not friendships, for example User)
+```php
+$user->getFriends();
+```
+
 #### Get a single friendship
 ```php
 $user->getFriendship($recipient);
