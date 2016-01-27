@@ -207,11 +207,11 @@ class FriedshipsTest extends TestCase
         $recipients[1]->acceptFriendRequest($sender);
         $recipients[2]->denyFriendRequest($sender);
 
-        $this->assertCount(2, $sender->getFriends());
-        $this->assertCount(1, $recipients[1]->getFriends());
-        $this->assertCount(0, $recipients[2]->getFriends());
-        $this->assertCount(0, $recipients[3]->getFriends());
+        $this->assertCount(2, $sender->getAllFriends());
+        $this->assertCount(1, $recipients[1]->getAllFriends());
+        $this->assertCount(0, $recipients[2]->getAllFriends());
+        $this->assertCount(0, $recipients[3]->getAllFriends());
 
-        $this->containsOnlyInstancesOf(\App\User::class, $sender->getFriends());
+        $this->containsOnlyInstancesOf(\App\User::class, $sender->getAllFriends());
     }
 }
