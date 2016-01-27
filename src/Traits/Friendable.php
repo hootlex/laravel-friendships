@@ -189,7 +189,7 @@ trait Friendable
      *
      * @return mixed
      */
-    private function getFriends()
+    private function getFriendsQueryBuilder()
     {
         $friendships = $this->findFriendships(Status::ACCEPTED)->get(['sender_id', 'recipient_id']);
         $recipients = $friendships->lists('recipient_id')->all();
@@ -203,9 +203,9 @@ trait Friendable
      *
      * @return mixed
      */
-    public function getAllFriends()
+    public function getFriends()
     {
-       return $this->getFriends()->get();
+        return $this->getFriendsQueryBuilder()->get();
     }
 
     /**
@@ -214,13 +214,11 @@ trait Friendable
      * @param $limit
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    public function getFriendsLimited($limit)
+    public function getFriendsLimited($limit = 0)
     {
-        if (is_numeric($limit) && $limit > 0) {
-            return $this->getFriends()->take($limit)->get();
-        } else {
-            return $this->getAllFriends();
-        }
+        if ($limit == 0) return $this->getFriends();
+
+        return $this->getFriendsQueryBuilder()->take($limit)->get();
     }
 
     /**
@@ -229,13 +227,11 @@ trait Friendable
      * @param $perPage
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    public function getFriendsWithPagination($perPage)
+    public function getFriendsWithPagination($perPage = 0)
     {
-        if (is_numeric($perPage) && $perPage > 0) {
-            return $this->getFriends()->paginate($perPage);
-        } else {
-            return $this->getAllFriends();
-        }
+        if ($perPage == 0) return $this->getAllFriends();
+
+        return $this->getFriendsQueryBuilder()->paginate($perPage);
     }
 
     /**
