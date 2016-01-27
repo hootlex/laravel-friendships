@@ -1,5 +1,6 @@
 # Laravel 5 Friendships [![Build Status](https://travis-ci.org/hootlex/laravel-friendships.svg?branch=master)](https://travis-ci.org/hootlex/laravel-friendships) [![Version](https://img.shields.io/packagist/v/hootlex/laravel-friendships.svg?style=flat)](https://packagist.org/packages/hootlex/laravel-friendships)  [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat)](LICENSE)
 
+> ** Note: getFriends() is now getAllFriends()
 
 This package gives Eloqent models the ability to manage their friendships.
 You can easily design a Facebook like Friend System.
