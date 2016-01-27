@@ -99,7 +99,7 @@ $user->getAllFriends();
 ```php
 $user->getFriendsLimited($limit);
 ```
-Use Case
+#Use Case
 ```php
 $user->getFriendsLimited(5);
 ```
@@ -110,19 +110,21 @@ This will return only 5 friends.
 $user->getFriendsWithPagination($perPage);
 ```
 
-Use Case
+#Use Case
 ```php
 $friends = $user->getFriendsWithPagination(5);
 ```
 This will return a paginator object. To render links
+```
 5.1: Use ->render();
 5.2: Use ->links();
-
-View
+```
+#View
 ```html
 @foreach($friends as $friend)
 	<p>{{ $friend->name }}</p>
 @endforeach
+
 {!! $friends->links() !!}
 ```
 
