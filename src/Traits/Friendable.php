@@ -229,7 +229,7 @@ trait Friendable
      */
     public function getFriendsWithPagination($perPage = 0)
     {
-        if ($perPage == 0) return $this->getAllFriends();
+        if ($perPage == 0) return $this->getFriends();
 
         return $this->getFriendsQueryBuilder()->paginate($perPage);
     }
