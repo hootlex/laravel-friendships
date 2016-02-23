@@ -60,6 +60,18 @@ class FriedshipsTest extends TestCase
 
 
     /** @test */
+    public function user_cannot_accept_his_own_friend_request(){
+        $sender = createUser();
+        $recipient = createUser();
+
+        //send fr
+        $sender->befriend($recipient);
+
+        $sender->acceptFriendRequest($recipient);
+        $this->assertFalse($recipient->isFriendWith($sender));
+    }
+
+    /** @test */
     public function user_can_deny_a_friend_request()
     {
         $sender = createUser();
