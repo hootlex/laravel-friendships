@@ -57,7 +57,7 @@ trait Friendable
      */
     public function acceptFriendRequest(Model $recipient)
     {
-        return $this->findFriendship($recipient)->update([
+        return $this->findFriendship($recipient)->whereRecipient($this)->whereRecipient($this)->update([
             'status' => Status::ACCEPTED,
         ]);
     }
@@ -69,7 +69,7 @@ trait Friendable
      */
     public function denyFriendRequest(Model $recipient)
     {
-        return $this->findFriendship($recipient)->update([
+        return $this->findFriendship($recipient)->whereRecipient($this)->update([
             'status' => Status::DENIED,
         ]);
     }
