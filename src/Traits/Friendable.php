@@ -57,7 +57,7 @@ trait Friendable
      */
     public function acceptFriendRequest(Model $recipient)
     {
-        return $this->findFriendship($recipient)->whereRecipient($this)->whereRecipient($this)->update([
+        return $this->findFriendship($recipient)->whereRecipient($this)->update([
             'status' => Status::ACCEPTED,
         ]);
     }
