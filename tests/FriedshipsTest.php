@@ -56,6 +56,7 @@ class FriedshipsTest extends TestCase
         $sender->befriend($recipient);
 
         $this->assertFalse($recipient->isFriendWith($sender));
+        $this->assertFalse($sender->isFriendWith($recipient));
     }
 
 
