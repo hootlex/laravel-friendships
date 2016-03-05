@@ -209,6 +209,17 @@ trait Friendable
     }
 
     /**
+     * Get the number of friends
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function getFriendsCount()
+    {
+        $friendsCount = $this->findFriendships(Status::ACCEPTED)->count();
+        return $friendsCount;
+    }
+
+    /**
      * @param Model $recipient
      *
      * @return bool

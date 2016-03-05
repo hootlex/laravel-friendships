@@ -155,6 +155,21 @@ class FriedshipsTest extends TestCase
     }
 
     /** @test */
+    public function it_returns_accepted_user_friendships_number(){
+        $sender = createUser();
+        $recipients = createUser([], 3);
+
+        foreach ($recipients as $recipient) {
+            $sender->befriend($recipient);
+        }
+
+        $recipients[0]->acceptFriendRequest($sender);
+        $recipients[1]->acceptFriendRequest($sender);
+        $recipients[2]->denyFriendRequest($sender);
+        $this->assertEquals(2, $sender->getFriendsCount());
+    }
+
+    /** @test */
     public function it_returns_accepted_user_friendships(){
         $sender = createUser();
         $recipients = createUser([], 3);
