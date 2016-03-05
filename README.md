@@ -134,3 +134,8 @@ $user->getBlockedFriendships();
 ```php
 $user->getFriendRequests();
 ```
+
+#### Get the number of Friends 
+```php
+$user->getFriendsCount();
+```
