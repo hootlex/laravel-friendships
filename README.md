@@ -1,6 +1,5 @@
 # Laravel 5 Friendships [![Build Status](https://travis-ci.org/hootlex/laravel-friendships.svg?branch=master)](https://travis-ci.org/hootlex/laravel-friendships) [![Version](https://img.shields.io/packagist/v/hootlex/laravel-friendships.svg?style=flat)](https://packagist.org/packages/hootlex/laravel-friendships)  [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat)](LICENSE)
 
-
 This package gives Eloqent models the ability to manage their friendships.
 You can easily design a Facebook like Friend System.
 
@@ -95,9 +94,44 @@ $user->hasBlocked($recipient);
 $user->isBlockedBy($recipient);
 ```
 
-#### Get Friends (It returns a collection of friend models not friendships, for example User)
+#### Get All Friends(accepted) (It returns a collection of friend models not friendships, for example User)
 ```php
-$user->getFriends();
+$user->getAllFriends();
+```
+
+#### Get Friends(accepted) with Limit 
+```php
+$user->getFriendsLimited($limit);
+Default $limit = 0, will return all friends
+```
+##### Use Case
+```php
+$user->getFriendsLimited(5);
+```
+This will return only 5 friends.
+
+#### Get Friends(accepted) with Pagination 
+```php
+$user->getFriendsWithPagination($perPage);
+Default $perPage = 0, will return all friends
+```
+
+##### Use Case
+```php
+$friends = $user->getFriendsWithPagination(5);
+```
+This will return a paginator object. To render links
+```
+Laravel >5.0: Use ->render();
+Laravel >5.2: Use ->links();
+```
+##### View
+```html
+@foreach($friends as $friend)
+	<p>{{ $friend->name }}</p>
+@endforeach
+
+{!! $friends->links() !!}
 ```
 
 #### Get a single friendship

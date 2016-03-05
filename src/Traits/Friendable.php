@@ -194,18 +194,54 @@ trait Friendable
     }
 
     /**
-     * This method will not return Friendship models
+     *  This method will not return Friendship models
      * It will return the 'friends' models. ex: App\User
      *
-     * @return \Illuminate\Database\Eloquent\Collection
+     * @return mixed
      */
-    public function getFriends()
+    private function getFriendsQueryBuilder()
     {
         $friendships = $this->findFriendships(Status::ACCEPTED)->get(['sender_id', 'recipient_id']);
         $recipients = $friendships->lists('recipient_id')->all();
         $senders = $friendships->lists('sender_id')->all();
 
-        return $this->where('id', '!=', $this->getKey())->whereIn('id', array_merge($recipients, $senders))->get();
+        return $this->where('id', '!=', $this->getKey())->whereIn('id', array_merge($recipients, $senders));
+    }
+
+    /**
+     * Get All Friends
+     *
+     * @return mixed
+     */
+    public function getFriends()
+    {
+        return $this->getFriendsQueryBuilder()->get();
+    }
+
+    /**
+     * Get limited amount of Accepted Friends
+     *
+     * @param $limit
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function getFriendsLimited($limit = 0)
+    {
+        if ($limit == 0) return $this->getFriends();
+
+        return $this->getFriendsQueryBuilder()->take($limit)->get();
+    }
+
+    /**
+     * Get Friends with Pagination
+     *
+     * @param $perPage
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function getFriendsWithPagination($perPage = 0)
+    {
+        if ($perPage == 0) return $this->getFriends();
+
+        return $this->getFriendsQueryBuilder()->paginate($perPage);
     }
 
     /**
