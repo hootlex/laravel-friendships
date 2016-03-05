@@ -100,6 +100,11 @@ $user->isBlockedBy($recipient);
 $user->getFriends();
 ```
 
+#### Get 20 Friends per page (It returns a collection of friend models not friendships, for example User)
+```php
+$user->getFriends(20);
+```
+
 #### Get a single friendship
 ```php
 $user->getFriendship($recipient);
