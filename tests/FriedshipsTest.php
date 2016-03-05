@@ -60,19 +60,19 @@ class FriedshipsTest extends TestCase
     }
 
     /** @test */
-    public function user_has_pending_friend_request_from_another_user_if_he_received_a_friend_request()
+    public function user_has_friend_request_from_another_user_if_he_received_a_friend_request()
     {
         $sender = createUser();
         $recipient = createUser();
         //send fr
         $sender->befriend($recipient);
 
-        $this->assertTrue($recipient->hasPendingFriendRequestFrom($sender));
-        $this->assertFalse($sender->hasPendingFriendRequestFrom($recipient));
+        $this->assertTrue($recipient->hasFriendRequestFrom($sender));
+        $this->assertFalse($sender->hasFriendRequestFrom($recipient));
     }
 
     /** @test */
-    public function user_has_not_pending_friend_request_from_another_user_if_he_accepted_the_friend_request()
+    public function user_has_not_friend_request_from_another_user_if_he_accepted_the_friend_request()
     {
         $sender = createUser();
         $recipient = createUser();
@@ -81,8 +81,8 @@ class FriedshipsTest extends TestCase
         //accept fr
         $recipient->acceptFriendRequest($sender);
 
-        $this->assertFalse($recipient->hasPendingFriendRequestFrom($sender));
-        $this->assertFalse($sender->hasPendingFriendRequestFrom($recipient));
+        $this->assertFalse($recipient->hasFriendRequestFrom($sender));
+        $this->assertFalse($sender->hasFriendRequestFrom($recipient));
     }
 
     /** @test */
