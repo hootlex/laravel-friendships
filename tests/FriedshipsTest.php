@@ -267,4 +267,30 @@ class FriedshipsTest extends TestCase
 
         $this->containsOnlyInstancesOf(\App\User::class, $sender->getFriends());
     }
+
+    /** @test */
+    public function it_return_user_friends_per_page(){
+        $sender = createUser();
+        $recipients = createUser([], 6);
+
+        foreach ($recipients as $recipient) {
+            $sender->befriend($recipient);
+        }
+
+        $recipients[0]->acceptFriendRequest($sender);
+        $recipients[1]->acceptFriendRequest($sender);
+        $recipients[2]->denyFriendRequest($sender);
+        $recipients[3]->acceptFriendRequest($sender);
+        $recipients[4]->acceptFriendRequest($sender);
+
+
+        $this->assertCount(2, $sender->getFriends(2));
+        $this->assertCount(4, $sender->getFriends(0));
+        $this->assertCount(4, $sender->getFriends(10));
+        $this->assertCount(1, $recipients[1]->getFriends());
+        $this->assertCount(0, $recipients[2]->getFriends());
+        $this->assertCount(0, $recipients[5]->getFriends(2));
+
+        $this->containsOnlyInstancesOf(\App\User::class, $sender->getFriends());
+    }
 }
