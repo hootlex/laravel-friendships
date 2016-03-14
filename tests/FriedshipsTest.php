@@ -31,6 +31,21 @@ class FriedshipsTest extends TestCase
         $this->assertCount(1, $recipient->getFriendRequests());
     }
 
+
+    /** @test */
+    public function user_can_send_a_friend_request_if_frienship_is_denied()
+    {
+        $sender = createUser();
+        $recipient = createUser();
+
+        $sender->befriend($recipient);
+        $recipient->denyFriendRequest($sender);
+
+        $sender->befriend($recipient);
+
+        $this->assertCount(1, $recipient->getFriendRequests());
+    }
+
     /** @test */
     public function user_is_friend_with_another_user_if_accepts_a_friend_request()
     {
