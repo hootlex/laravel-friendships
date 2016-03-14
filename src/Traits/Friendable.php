@@ -243,8 +243,11 @@ trait Friendable
     public function canBefriend($recipient)
     {
         //If sender has a friendship with the recipient return false
-        if ($this->getFriendship($recipient)) {
-            return false;
+        if ($friendship = $this->getFriendship($recipient)) {
+            //if previous friendship was Denied then let the user send fr
+            if(!$friendship->status == Status::DENIED){
+                return false;
+            }
         }
         return true;
     }
