@@ -221,9 +221,9 @@ trait Friendable
     public function getFriendsOfFriends($perPage = 0)
     {
         if ($perPage == 0) {
-            return $this->FriendsOfFriendsQueryBuilder()->get();
+            return $this->friendsOfFriendsQueryBuilder()->get();
         } else {
-            return $this->FriendsOfFriendsQueryBuilder()->paginate($perPage);
+            return $this->friendsOfFriendsQueryBuilder()->paginate($perPage);
         }
     }
 
