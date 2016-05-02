@@ -95,16 +95,6 @@ $user->hasBlocked($recipient);
 $user->isBlockedBy($recipient);
 ```
 
-#### Get Friends (It returns a collection of friend models not friendships, for example User)
-```php
-$user->getFriends();
-```
-
-#### Get Friends Paginated
-```php
-$user->getFriends($perPage = 20);
-```
-
 #### Get a single friendship
 ```php
 $user->getFriendship($recipient);
@@ -143,4 +133,21 @@ $user->getFriendRequests();
 #### Get the number of Friends 
 ```php
 $user->getFriendsCount();
+```
+
+
+### To get a collection of friend models (ex. User) you can use the following methods
+#### Get Friends
+```php
+$user->getFriends();
+```
+
+#### Get Friends Paginated
+```php
+$user->getFriends($perPage = 20);
+```
+
+#### Get Friends of Friends
+```php
+$user->getFriendsOfFriends($perPage = 20);
 ```
