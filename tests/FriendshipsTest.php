@@ -263,7 +263,7 @@ class FriendshipsTest extends TestCase
     }
 
     /** @test */
-    public function it_return_user_friends(){
+    public function it_returns_user_friends(){
         $sender = createUser();
         $recipients = createUser([], 4);
 
@@ -284,7 +284,7 @@ class FriendshipsTest extends TestCase
     }
 
     /** @test */
-    public function it_return_user_friends_per_page(){
+    public function it_returns_user_friends_per_page(){
         $sender = createUser();
         $recipients = createUser([], 6);
 
@@ -307,5 +307,31 @@ class FriendshipsTest extends TestCase
         $this->assertCount(0, $recipients[5]->getFriends(2));
 
         $this->containsOnlyInstancesOf(\App\User::class, $sender->getFriends());
+    }
+
+    /** @test */
+    public function it_returns_user_friends_of_friends(){
+        $sender = createUser();
+        $recipients = createUser([], 2);
+        $fofs = createUser([], 5)->chunk(3);
+
+        foreach ($recipients as $recipient) {
+            $sender->befriend($recipient);
+            $recipient->acceptFriendRequest($sender);
+
+            //add some friends to each recipient too
+            foreach ($fofs->shift() as $fof) {
+                $recipient->befriend($fof);
+                $fof->acceptFriendRequest($recipient);
+            }
+        }
+
+        $this->assertCount(2, $sender->getFriends());
+        $this->assertCount(4, $recipients[0]->getFriends());
+        $this->assertCount(3, $recipients[1]->getFriends());
+
+        $this->assertCount(5, $sender->getFriendsOfFriends());
+
+        $this->containsOnlyInstancesOf(\App\User::class, $sender->getFriendsOfFriends());
     }
 }
