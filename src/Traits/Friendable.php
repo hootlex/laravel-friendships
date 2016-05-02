@@ -211,18 +211,22 @@ trait Friendable
     }
 
     /**
-     * Get the query builder of the 'friend' model
+     * This method will not return Friendship models
+     * It will return the 'friends' models. ex: App\User
      *
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @param int $perPage Number
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
      */
-    private function getFriendsQueryBuilder()
+    public function getFriendsOfFriends($perPage = 0)
     {
-        $friendships = $this->findFriendships(Status::ACCEPTED)->get(['sender_id', 'recipient_id']);
-        $recipients = $friendships->lists('recipient_id')->all();
-        $senders = $friendships->lists('sender_id')->all();
-
-        return $this->where('id', '!=', $this->getKey())->whereIn('id', array_merge($recipients, $senders));
+        if ($perPage == 0) {
+            return $this->FriendsOfFriendsQueryBuilder()->get();
+        } else {
+            return $this->FriendsOfFriendsQueryBuilder()->paginate($perPage);
+        }
     }
+
 
     /**
      * Get the number of friends
@@ -277,6 +281,59 @@ trait Friendable
                     $q->whereRecipient($this);
                 });
             });
+    }
+
+
+    /**
+     * Get the query builder of the 'friend' model
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    private function getFriendsQueryBuilder()
+    {
+        $friendships = $this->findFriendships(Status::ACCEPTED)->get(['sender_id', 'recipient_id']);
+        $recipients = $friendships->lists('recipient_id')->all();
+        $senders = $friendships->lists('sender_id')->all();
+
+        return $this->where('id', '!=', $this->getKey())->whereIn('id', array_merge($recipients, $senders));
+    }
+
+    /**
+     * Get the query builder for friendsOfFriends ('friend' model)
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    private function FriendsOfFriendsQueryBuilder()
+    {
+        $friendships = $this->findFriendships(Status::ACCEPTED)->get(['sender_id', 'recipient_id']);
+        $recipients = $friendships->lists('recipient_id')->all();
+        $senders = $friendships->lists('sender_id')->all();
+
+        $friendIds = array_unique(array_merge($recipients, $senders));
+
+
+        $fofs = Friendship::where('status', Status::ACCEPTED)
+                          ->where(function ($query) use ($friendIds) {
+                              $query->where(function ($q) use ($friendIds) {
+                                  $q->whereIn('sender_id', $friendIds);
+                              })->orWhere(function ($q) use ($friendIds) {
+                                  $q->whereIn('recipient_id', $friendIds);
+                              });
+                          })->get(['sender_id', 'recipient_id']);
+
+        $fofIds = array_unique(
+            array_merge($fofs->pluck('sender_id')->all(), $fofs->lists('recipient_id')->all())
+        );
+
+//      Alternative way using collection helpers
+//        $fofIds = array_unique(
+//            $fofs->map(function ($item) {
+//                return [$item->sender_id, $item->recipient_id];
+//            })->flatten()->all()
+//        );
+
+
+        return $this->whereIn('id', $fofIds)->whereNotIn('id', $friendIds);
     }
 
     /**
