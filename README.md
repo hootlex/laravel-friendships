@@ -43,7 +43,7 @@ class User extends Model
 ```
 
 ## How to use 
-[Check the Test file to see the package in action](https://github.com/hootlex/laravel-friendships/blob/master/tests/FriedshipsTest.php)
+[Check the Test file to see the package in action](https://github.com/hootlex/laravel-friendships/blob/master/tests/FriendshipsTest.php)
 
 #### Send a Friend Request
 ```php
