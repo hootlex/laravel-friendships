@@ -271,16 +271,22 @@ trait Friendable
      *
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    private function findFriendships($status = '%')
+    private function findFriendships($status = null)
     {
-        return Friendship::where('status', 'LIKE', $status)
-            ->where(function ($query) {
+        $query = Friendship::where(function ($query) {
                 $query->where(function ($q) {
                     $q->whereSender($this);
                 })->orWhere(function ($q) {
                     $q->whereRecipient($this);
                 });
             });
+
+        //if $status is passed, add where clause
+        if(!is_null($status)){
+            $query->where('status', $status);
+        }
+
+        return $query;
     }
 
 
