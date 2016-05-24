@@ -136,7 +136,7 @@ $user->getFriendsCount();
 ```
 
 
-### To get a collection of friend models (ex. User) you can use the following methods
+### To get a collection of friend models (ex. User) use the following methods:
 #### Get Friends
 ```php
 $user->getFriends();
