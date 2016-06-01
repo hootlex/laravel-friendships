@@ -41,7 +41,7 @@ class Friendship extends Model
     {
         return $this->fill([
             'recipient_id' => $recipient->getKey(),
-            'recipient_type' => get_class($recipient)
+            'recipient_type' => $recipient->getMorphClass()
         ]);
     }
 
@@ -53,7 +53,7 @@ class Friendship extends Model
     public function scopeWhereRecipient($query, $model)
     {
         return $query->where('recipient_id', $model->getKey())
-            ->where('recipient_type', get_class($model));
+            ->where('recipient_type', $model->getMorphClass());
     }
 
     /**
@@ -64,7 +64,7 @@ class Friendship extends Model
     public function scopeWhereSender($query, $model)
     {
         return $query->where('sender_id', $model->getKey())
-            ->where('sender_type', get_class($model));
+            ->where('sender_type', $model->getMorphClass());
     }
 
     /**
