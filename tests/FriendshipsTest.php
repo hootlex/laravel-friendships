@@ -155,6 +155,18 @@ class FriendshipsTest extends TestCase
     }
 
     /** @test */
+    public function user_can_send_friend_request_to_user_who_is_blocked(){
+        $sender = createUser();
+        $recipient = createUser();
+
+        $sender->blockFriend($recipient);
+        $sender->befriend($recipient);
+        $sender->befriend($recipient);
+
+        $this->assertCount(1, $recipient->getFriendRequests());
+    }
+
+    /** @test */
     public function it_returns_all_user_friendships(){
         $sender = createUser();
         $recipients = createUser([], 3);

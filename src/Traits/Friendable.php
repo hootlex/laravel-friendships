@@ -108,7 +108,6 @@ trait Friendable
      */
     public function unblockFriend(Model $recipient)
     {
-
         return $this->findFriendship($recipient)->delete();
     }
 
@@ -246,10 +245,16 @@ trait Friendable
      */
     public function canBefriend($recipient)
     {
-        //If sender has a friendship with the recipient return false
+        // if user has Blocked the recipient and changed his mind
+        // he can send a friend request after unblocking
+        if($this->hasBlocked($recipient)){
+            $this->unblockFriend($recipient);
+            return true;
+        }
+        // if sender has a friendship with the recipient return false
         if ($friendship = $this->getFriendship($recipient)) {
-            //if previous friendship was Denied then let the user send fr
-            if(!$friendship->status == Status::DENIED){
+            // if previous friendship was Denied then let the user send fr
+            if($friendship->status != Status::DENIED){
                 return false;
             }
         }
