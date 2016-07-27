@@ -18,11 +18,14 @@ class FriendshipsServiceProvider extends ServiceProvider
         }
 
         $timestamp = date('Y_m_d_His', time());
-        $stub = __DIR__.'/database/migrations/create_friendships_table.php';
-        $target = database_path('migrations').'/'.$timestamp.'_create_friendships_table.php';
+        $stub      = __DIR__.'/database/migrations/create_friendships_table.php';
+        $target    = database_path('migrations').'/'.$timestamp.'_create_friendships_table.php';
         $this->publishes([$stub => $target], 'migrations');
+        $this->publishes([
+            __DIR__.'/config/friendships.php' => config_path('friendships.php'),
+        ], 'config');
     }
-    
+
     /**
      * Register any application services.
      *

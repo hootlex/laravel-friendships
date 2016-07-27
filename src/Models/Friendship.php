@@ -7,15 +7,21 @@ use Illuminate\Database\Eloquent\Model;
 
 class Friendship extends Model
 {
-    /**
-     * @var string
-     */
-    public $table = 'friendships';
 
     /**
      * @var array
      */
     protected $guarded = ['id', 'created_at', 'updated_at'];
+
+    /**
+     * @param array $attributes
+     */
+    public function __construct(array $attributes = array())
+    {
+        $this->table = config('friendships.tables.fr_pivot');
+
+        parent::__construct($attributes);
+    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\MorphTo
