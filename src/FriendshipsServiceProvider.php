@@ -13,14 +13,17 @@ class FriendshipsServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        if (class_exists('CreateFriendshipsTable')) {
+        if (class_exists('CreateFriendshipsTable') || class_exists('CreateFriendFriendshipGroupsTable')) {
             return;
         }
 
-        $timestamp = date('Y_m_d_His', time());
-        $stub      = __DIR__.'/database/migrations/create_friendships_table.php';
-        $target    = database_path('migrations').'/'.$timestamp.'_create_friendships_table.php';
-        $this->publishes([$stub => $target], 'migrations');
+        $stub      = __DIR__.'/database/migrations/';
+        $target    = database_path('migrations').'/';
+        $this->publishes([
+            $stub.'create_friendships_table.php'              => $target.date('Y_m_d_His', time()).'_create_friendships_table.php',
+            $stub.'create_friend_friendship_groups_table.php' => $target.date('Y_m_d_His', time()+1).'_create_friend_friendship_groups_table.php',
+
+        ], 'migrations');
         $this->publishes([
             __DIR__.'/config/friendships.php' => config_path('friendships.php'),
         ], 'config');
