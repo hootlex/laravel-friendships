@@ -9,6 +9,7 @@ You can easily design a Facebook like Friend System.
 - Accept Friend Requests
 - Deny Friend Requests
 - Block Another Model
+- Group user Friends to personal groups (defined in config): family, best friends, acquaintances
 
 ## Installation
 
@@ -60,6 +61,21 @@ $user->acceptFriendRequest($recipient);
 $user->denyFriendRequest($recipient);
 ```
 
+#### Group a Friend
+```php
+$user->groupFriend($friend, $group_name);
+```
+
+#### Remove a Friend from family group
+```php
+$user->ungroupFriend($friend, 'family');
+```
+
+#### Remove a Friend from all groups
+```php
+$user->ungroupFriend($friend);
+```
+
 #### Remove Friend
 ```php
 $user->unfriend($recipient);
@@ -105,6 +121,10 @@ $user->getFriendship($recipient);
 $user->getAllFriendships();
 ```
 
+#### Get a list of all Friendships in specific group
+```php
+$user->getAllFriendships($group_name);
+
 #### Get a list of pending Friendships
 ```php
 $user->getPendingFriendships();
@@ -113,6 +133,11 @@ $user->getPendingFriendships();
 #### Get a list of accepted Friendships
 ```php
 $user->getAcceptedFriendships();
+```
+
+#### Get a list of accepted Friendships in specific group
+```php
+$user->getAcceptedFriendships($group_name);
 ```
 
 #### Get a list of denied Friendships
@@ -135,6 +160,10 @@ $user->getFriendRequests();
 $user->getFriendsCount();
 ```
 
+#### Get the number of Friends in specific group
+```php
+$user->getFriendsCount($group_name);
+```
 
 ### To get a collection of friend models (ex. User) use the following methods:
 #### Get Friends
@@ -142,9 +171,14 @@ $user->getFriendsCount();
 $user->getFriends();
 ```
 
+#### Collection of Friends in specific group paginated:
+```php
+$user->getFriends($group_name, $perPage = 20);
+```
+
 #### Get Friends Paginated
 ```php
-$user->getFriends($perPage = 20);
+$user->getFriends('', $perPage = 20);
 ```
 
 #### Get Friends of Friends
