@@ -1,5 +1,8 @@
 language: php
 
+services:
+  - mysql
+
 php:
   - 5.6
   - hhvm
@@ -9,11 +12,11 @@ sudo: required
 before_install:
   - composer self-update
   - composer install --dev --prefer-source --no-interaction
+  - mysql -e 'create database friendships_test;'
 
 
 script:
 - cp src/database/migrations/create_friendships_table.php vendor/laravel/laravel/database/migrations/2015_11_19_053825_create_friendships_table.php
-- touch vendor/laravel/laravel/database/database.sqlite
 - yes | cp tests/Stub_User.php vendor/laravel/laravel/app/User.php
 - cd vendor/laravel/laravel
 - composer install --dev --prefer-source --no-interaction
