@@ -356,6 +356,20 @@ trait Friendable
     }
 
     /**
+     * Get friendships of this user.
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function friendships()
+    {
+        $friendships = $this->findFriendships(Status::ACCEPTED)->get(['sender_id', 'recipient_id']);
+        $recipients = $friendships->lists('recipient_id')->all();
+        $senders = $friendships->lists('sender_id')->all();
+
+        return $this->where('id', '!=', $this->getKey())->whereIn('id', array_merge($recipients, $senders));
+    }
+
+    /**
      * @deprecated Will be removed in version 2
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphMany
