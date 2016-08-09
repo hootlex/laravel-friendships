@@ -412,7 +412,7 @@ trait Friendable
                                   $q->whereIn('recipient_id', $friendIds);
                               });
                           })
-                          ->whereGroup($group_slug)
+                          ->whereGroup($this, $group_slug)
                           ->get(['sender_id', 'recipient_id']);
 
         $fofIds = array_unique(
