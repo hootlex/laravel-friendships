@@ -23,7 +23,7 @@ trait Friendable
             'status' => Status::PENDING,
         ]);
 
-        $this->friendships()->save($friendship);
+        $this->friendshipRequests()->save($friendship);
 
         return $friendship;
 
@@ -98,7 +98,7 @@ trait Friendable
             'status' => Status::BLOCKED,
         ]);
 
-        return $this->friendships()->save($friendship);
+        return $this->friendshipRequests()->save($friendship);
     }
 
     /**
@@ -171,7 +171,7 @@ trait Friendable
      */
     public function hasBlocked(Model $recipient)
     {
-        return $this->friendships()->whereRecipient($recipient)->whereStatus(Status::BLOCKED)->exists();
+        return $this->friendshipRequests()->whereRecipient($recipient)->whereStatus(Status::BLOCKED)->exists();
     }
 
     /**
@@ -350,7 +350,7 @@ trait Friendable
     /**
      * @return \Illuminate\Database\Eloquent\Relations\MorphMany
      */
-    protected function friendships()
+    protected function friendshipRequests()
     {
         return $this->morphMany(Friendship::class, 'sender');
     }
