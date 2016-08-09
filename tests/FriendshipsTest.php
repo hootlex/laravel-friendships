@@ -346,4 +346,31 @@ class FriendshipsTest extends TestCase
 
         $this->containsOnlyInstancesOf(\App\User::class, $sender->getFriendsOfFriends());
     }
+
+    /** @test */
+    public function it_returns_all_requests(){
+        $sender = createUser();
+        $recipients = createUser([], 4);
+
+        $this->assertCount(0, $sender->requests()->get());
+
+        foreach ($recipients as $recipient) {
+            $sender->befriend($recipient);
+        }
+
+        $recipients[0]->acceptFriendRequest($sender);
+        $recipients[1]->denyFriendRequest($sender);
+
+        $this->assertCount(4, $sender->requests()->get());
+        $this->assertCount(1, $recipients[1]->requests()->get());
+
+        $this->containsOnlyInstancesOf(\Hootlex\Friendships\Models\Friendship::class, $sender->requests());
+        $this->containsOnlyInstancesOf(\Hootlex\Friendships\Models\Friendship::class, $recipients[1]->requests()->get());
+
+        // For each request, we want the sender and recipient (Both user objects)
+        foreach ($sender->requests()->get() as $request) {
+            $this->assertInstanceOf(\App\User::class, $request->sender);
+            $this->assertInstanceOf(\App\User::class, $request->recipient);
+        }
+    }
 }
