@@ -203,9 +203,9 @@ trait Friendable
     public function getFriends($perPage = 0)
     {
         if ($perPage == 0) {
-            return $this->getFriendsQueryBuilder()->get();
+            return $this->friendships()->get();
         } else {
-            return $this->getFriendsQueryBuilder()->paginate($perPage);
+            return $this->friendships()->paginate($perPage);
         }
     }
 
@@ -292,21 +292,6 @@ trait Friendable
         }
 
         return $query;
-    }
-
-
-    /**
-     * Get the query builder of the 'friend' model
-     *
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    private function getFriendsQueryBuilder()
-    {
-        $friendships = $this->findFriendships(Status::ACCEPTED)->get(['sender_id', 'recipient_id']);
-        $recipients = $friendships->lists('recipient_id')->all();
-        $senders = $friendships->lists('sender_id')->all();
-
-        return $this->where('id', '!=', $this->getKey())->whereIn('id', array_merge($recipients, $senders));
     }
 
     /**
