@@ -356,10 +356,13 @@ trait Friendable
     }
 
     /**
+     * @deprecated Will be removed in version 2
+     *
      * @return \Illuminate\Database\Eloquent\Relations\MorphMany
      */
     public function friends()
     {
+        @trigger_error(sprintf('The '.__METHOD__.' method was deprecated in version 1.1 and will be removed in version 2.0. You should implement this method yourself in %s.', get_class($this)), E_USER_DEPRECATED);
         return $this->morphMany(Friendship::class, 'sender');
     }
 }
