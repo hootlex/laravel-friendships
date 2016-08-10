@@ -311,12 +311,12 @@ class FriendshipsTest extends TestCase
         $recipients[4]->acceptFriendRequest($sender);
 
 
-        $this->assertCount(2, $sender->getFriends(2));
-        $this->assertCount(4, $sender->getFriends(0));
-        $this->assertCount(4, $sender->getFriends(10));
+        $this->assertCount(2, $sender->getFriends('', 2));
+        $this->assertCount(4, $sender->getFriends('', 0));
+        $this->assertCount(4, $sender->getFriends('', 10));
         $this->assertCount(1, $recipients[1]->getFriends());
         $this->assertCount(0, $recipients[2]->getFriends());
-        $this->assertCount(0, $recipients[5]->getFriends(2));
+        $this->assertCount(0, $recipients[5]->getFriends('', 2));
 
         $this->containsOnlyInstancesOf(\App\User::class, $sender->getFriends());
     }
