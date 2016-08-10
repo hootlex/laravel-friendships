@@ -373,4 +373,82 @@ class FriendshipsTest extends TestCase
             $this->assertInstanceOf(\App\User::class, $request->recipient);
         }
     }
+
+    /** @test */
+    public function it_returns_accepted_requests(){
+        $sender = createUser();
+        $recipients = createUser([], 3);
+        foreach ($recipients as $recipient) {
+            $sender->befriend($recipient);
+        }
+        $recipients[0]->acceptFriendRequest($sender);
+        $recipients[1]->acceptFriendRequest($sender);
+        $recipients[2]->denyFriendRequest($sender);
+
+        $this->assertCount(2, $sender->requests()->accepted()->get());
+        $this->assertCount(1, $recipients[1]->requests()->accepted()->get());
+        $this->assertCount(0, $recipients[2]->requests()->accepted()->get());
+    }
+
+    /** @test */
+    public function it_returns_pending_requests(){
+        $sender = createUser();
+        $recipients = createUser([], 6);
+
+        $sender->befriend($recipients[0]);
+        $sender->befriend($recipients[1]);
+        $sender->befriend($recipients[2]);
+        $sender->befriend($recipients[3]);
+        // sender: 4 pendings
+        $this->assertCount(4, $sender->requests()->pending()->get());
+
+
+        $recipients[0]->acceptFriendRequest($sender);
+        $recipients[1]->acceptFriendRequest($sender);
+        $recipients[2]->denyFriendRequest($sender);
+        // sender: 4 - 3 = 1 pending
+        $this->assertCount(1, $sender->requests()->pending()->get());
+
+
+        $recipients[3]->befriend($sender); // already pending
+        $recipients[4]->befriend($sender);
+        $recipients[5]->befriend($sender);
+        // sender: 1 + 2 = 3 pendings
+        $this->assertCount(3, $sender->requests()->pending()->get());
+
+
+
+        $sender->acceptFriendRequest($recipients[4]);
+        // sender: 3 - 1 = 2 pendings
+
+        $this->assertCount(2, $sender->requests()->pending()->get());
+        $this->assertCount(0, $recipients[1]->requests()->pending()->get());
+        $this->assertCount(1, $recipients[3]->requests()->pending()->get());
+    }
+
+    /** @test */
+    public function it_returns_denied_requests(){
+        $sender = createUser();
+        $recipients = createUser([], 3);
+        foreach ($recipients as $recipient) {
+            $sender->befriend($recipient);
+        }
+        $recipients[0]->acceptFriendRequest($sender);
+        $recipients[1]->acceptFriendRequest($sender);
+        $recipients[2]->denyFriendRequest($sender);
+        $this->assertCount(1, $sender->requests()->denied()->get());
+    }
+
+    /** @test */
+    public function it_returns_blocked_requests(){
+        $sender = createUser();
+        $recipients = createUser([], 3);
+        foreach ($recipients as $recipient) {
+            $sender->befriend($recipient);
+        }
+        $recipients[0]->acceptFriendRequest($sender);
+        $recipients[1]->acceptFriendRequest($sender);
+        $recipients[2]->blockFriend($sender);
+        $this->assertCount(1, $sender->requests()->blocked()->get());
+    }
 }
