@@ -321,6 +321,80 @@ class FriendshipsTest extends TestCase
         $this->containsOnlyInstancesOf(\App\User::class, $sender->getFriends());
     }
 
+    /*
+     * Test User Personal Friend Groups
+    */
+
+    /** @test */
+    public function add_friend_to_group() {
+
+        $sender    = createUser();
+        $recipient = createUser();
+        $stranger  = createUser();
+
+        $sender->befriend($recipient);
+        $recipient->acceptFriendRequest($sender);
+
+        $this->assertTrue((boolean)$recipient->groupFriend($sender, 'acquaintances'));
+        $this->assertTrue((boolean)$sender->groupFriend($recipient, 'family'));
+
+        $this->assertFalse((boolean)$sender->groupFriend($recipient, 'family'));
+        $this->assertFalse((boolean)$stranger->groupFriend($recipient, 'acquaintances'));
+
+
+    }
+
+    /** @test */
+    public function add_stranger_to_group() {
+
+        $sender    = createUser();
+        $stranger  = createUser();
+
+        $this->assertFalse((boolean)$sender->groupFriend($stranger, 'family'));
+
+    }
+
+    /** @test */
+    public function remove_friend_from_group() {
+
+        $sender    = createUser();
+        $recipient = createUser();
+
+        $sender->befriend($recipient);
+        $recipient->acceptFriendRequest($sender);
+
+        $recipient->groupFriend($sender, 'acquaintances');
+
+        $sender->groupFriend($recipient, 'family');
+        $sender->groupFriend($recipient, 'acquaintances');
+
+        $this->assertCount(1, $recipient->ungroupFriend($sender));
+        $this->assertCount(1, $sender->ungroupFriend($recipient, 'family'));
+
+    }
+
+    /** @test */
+    public function get_friends_by_group() {
+
+        $sender     = createUser();
+        $recipients = createUser([], 10);
+
+        foreach ($recipients as $key => $recipient) {
+
+            $sender->befriend($recipient);
+            $recipient->acceptFriendRequest($sender);
+
+            if ($key % 2 === 0) {
+                $sender->groupFriend($recipient, 'family');
+            }
+
+            $this->assertCount(5, $sender->getFriends('family'));
+            $this->assertCount(10, $sender->getFriends());
+
+        }
+
+    }
+
     /** @test */
     public function it_returns_user_friends_of_friends(){
         $sender = createUser();
@@ -346,4 +420,6 @@ class FriendshipsTest extends TestCase
 
         $this->containsOnlyInstancesOf(\App\User::class, $sender->getFriendsOfFriends());
     }
+
+
 }
