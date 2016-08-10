@@ -4,9 +4,9 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 /**
- * Class CreateFriendFriendshipGroupsTable
+ * Class CreateFriendshipsGroupsTable
  */
-class CreateFriendFriendshipGroupsTable extends Migration
+class CreateFriendshipsGroupsTable extends Migration
 {
 
     public function up() {
