@@ -451,4 +451,28 @@ class FriendshipsTest extends TestCase
         $recipients[2]->blockFriend($sender);
         $this->assertCount(1, $sender->requests()->blocked()->get());
     }
+
+    /** @test */
+    public function it_returns_incoming_requests(){
+        $sender = createUser();
+        $recipients = createUser([], 7);
+
+        $sender->befriend($recipients[0]);
+        $sender->befriend($recipients[1]);
+        $sender->befriend($recipients[2]);
+        $sender->befriend($recipients[3]);
+
+        $recipients[0]->acceptFriendRequest($sender);
+        $recipients[1]->acceptFriendRequest($sender);
+        $recipients[2]->denyFriendRequest($sender);
+        $recipients[3]->befriend($sender); // /!\ Sender firstly request to be friend
+        $recipients[5]->befriend($sender); // sender: 1
+        $recipients[6]->befriend($sender); // sender: 2
+        $sender->acceptFriendRequest($recipients[6]);
+
+
+        $this->assertCount(2, $sender->requests()->incoming()->get());
+        $this->assertCount(1, $recipients[3]->requests()->incoming()->get());
+        $this->assertCount(0, $recipients[0]->requests()->incoming()->get());
+    }
 }
