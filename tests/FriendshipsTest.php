@@ -390,7 +390,7 @@ class FriendshipsTest extends TestCase
 
         }
 
-        $this->assertCount(5, $sender->getFriends('family'));
+        $this->assertCount(5, $sender->getFriends(0, 'family'));
         $this->assertCount(10, $sender->getFriends());
 
     }
