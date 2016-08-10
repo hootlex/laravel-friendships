@@ -124,6 +124,7 @@ $user->getAllFriendships();
 #### Get a list of all Friendships in specific group
 ```php
 $user->getAllFriendships($group_name);
+```
 
 #### Get a list of pending Friendships
 ```php
