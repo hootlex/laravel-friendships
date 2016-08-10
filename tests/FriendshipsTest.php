@@ -388,10 +388,10 @@ class FriendshipsTest extends TestCase
                 $sender->groupFriend($recipient, 'family');
             }
 
-            $this->assertCount(5, $sender->getFriends('family'));
-            $this->assertCount(10, $sender->getFriends());
-
         }
+
+        $this->assertCount(5, $sender->getFriends('family'));
+        $this->assertCount(10, $sender->getFriends());
 
     }
 
