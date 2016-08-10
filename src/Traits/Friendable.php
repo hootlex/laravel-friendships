@@ -266,12 +266,12 @@ trait Friendable
      * This method will not return Friendship models
      * It will return the 'friends' models. ex: App\User
      *
-     * @param string $group_slug
      * @param int $perPage Number
+     * @param string $group_slug
      *
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    public function getFriends($group_slug = '', $perPage = 0)
+    public function getFriends($perPage = 0, $group_slug = '')
     {
         if ($perPage == 0) {
             return $this->getFriendsQueryBuilder($group_slug)->get();

@@ -173,12 +173,12 @@ $user->getFriends();
 
 #### Collection of Friends in specific group paginated:
 ```php
-$user->getFriends($group_name, $perPage = 20);
+$user->getFriends($perPage = 20, $group_name);
 ```
 
 #### Get Friends Paginated
 ```php
-$user->getFriends('', $perPage = 20);
+$user->getFriends($perPage = 20);
 ```
 
 #### Get Friends of Friends
