@@ -14,8 +14,6 @@ class FriendshipsServiceProvider extends ServiceProvider
     public function boot()
     {
 
-        $config = include __DIR__.'/config/friendships.php';
-
         if (class_exists('CreateFriendshipsTable') || class_exists('CreateFriendshipsGroupsTable')) {
             return;
         }
@@ -23,14 +21,10 @@ class FriendshipsServiceProvider extends ServiceProvider
         $stub      = __DIR__.'/database/migrations/';
         $target    = database_path('migrations').'/';
 
-        $migrations = [];
-        $migrations[$stub.'create_friendships_table.php'] = $target.date('Y_m_d_His', time()).'_create_friendships_table.php';
-
-        if (isset($config['groups']) && !empty($config['groups'])) {
-            $migrations[$stub.'create_friendships_groups_table.php'] = $target.date('Y_m_d_His', time()+1).'_create_friendships_groups_table.php';
-        }
-
-        $this->publishes($migrations, 'migrations');
+        $this->publishes([
+            $stub.'create_friendships_table.php'        => $target.date('Y_m_d_His', time()).'_create_friendships_table.php',
+            $stub.'create_friendships_groups_table.php' => $target.date('Y_m_d_His', time()+1).'_create_friendships_groups_table.php'
+        ], 'migrations');
 
         $this->publishes([
             __DIR__.'/config/friendships.php' => config_path('friendships.php'),
