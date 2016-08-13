@@ -65,7 +65,7 @@ class FriendshipsGroupsTest extends TestCase
         
         // expect that friend has been removed from acquaintances but not family
         $this->assertCount(0, $recipient->getFriends(0, 'acquaintances'));
-        $this->assertCount(0, $recipient->getFriends(0, 'family'));
+        $this->assertCount(1, $recipient->getFriends(0, 'family'));
     }
     
     /** @test */
