@@ -2,6 +2,7 @@
 
 namespace Hootlex\Friendships\Traits;
 
+use Hootlex\Friendships\Direction;
 use Hootlex\Friendships\Models\Friendship;
 use Hootlex\Friendships\Status;
 use Illuminate\Database\Eloquent\Model;
@@ -272,19 +273,26 @@ trait Friendable
     }
 
     /**
-     * @param $status
+     * @param int $status
+     * @param int $direction
      *
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    private function findRequests($status = null)
+    private function findRequests($status = null, $direction = Direction::ALL)
     {
-        $query = Friendship::where(function ($query) {
+        $query = Friendship::where(function ($query) use ($direction) {
+            if (($direction & Direction::OUTGOING) == Direction::OUTGOING) {
                 $query->where(function ($q) {
                     $q->whereSender($this);
-                })->orWhere(function ($q) {
+                });
+            }
+
+            if (($direction & Direction::INCOMING) == Direction::INCOMING) {
+                $query->orWhere(function ($q) {
                     $q->whereRecipient($this);
                 });
-            });
+            }
+        });
 
         //if $status is passed, add where clause
         if(!is_null($status)){
@@ -357,11 +365,13 @@ trait Friendable
     /**
      * Get requests of this user.
      *
-     * @return \Illuminate\Database\Eloquent\Builder|Friendship
+     * @param int $direction
+     *
+     * @return Friendship|\Illuminate\Database\Eloquent\Builder
      */
-    public function requests()
+    public function requests($direction = Direction::ALL)
     {
-        $friendships = $this->findRequests();
+        $friendships = $this->findRequests(null, $direction);
 
         return $friendships;
     }

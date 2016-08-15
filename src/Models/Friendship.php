@@ -13,8 +13,6 @@ use Illuminate\Database\Eloquent\Model;
  * @method \Illuminate\Database\Eloquent\Builder|Friendship accepted() Get accepted friendships
  * @method \Illuminate\Database\Eloquent\Builder|Friendship blocked()  Get blocked friendships
  * @method \Illuminate\Database\Eloquent\Builder|Friendship denied()   Get denied friendships
- * @method \Illuminate\Database\Eloquent\Builder|Friendship incoming() Get incoming friendships
- * @method \Illuminate\Database\Eloquent\Builder|Friendship outgoing() Get outgoing friendships
  */
 class Friendship extends Model
 {
@@ -112,32 +110,6 @@ class Friendship extends Model
     public function scopeDenied($query)
     {
         return $query->whereStatus(Status::DENIED);
-    }
-
-    /**
-     * @param \Illuminate\Database\Eloquent\Builder $query
-     * @return \Illuminate\Database\Eloquent\Builder|Friendship
-     */
-    public function scopeIncoming($query)
-    {
-        return $query;
-
-        // @todo Need User object
-        $user = null;
-        return $query->whereRecipient($user);
-    }
-
-    /**
-     * @param \Illuminate\Database\Eloquent\Builder $query
-     * @return \Illuminate\Database\Eloquent\Builder|Friendship
-     */
-    public function scopeOutgoing($query)
-    {
-        return $query;
-
-        // @todo Need User object
-        $user = null;
-        return $query->whereSender($user);
     }
 
     /**

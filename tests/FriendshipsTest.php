@@ -471,8 +471,43 @@ class FriendshipsTest extends TestCase
         $sender->acceptFriendRequest($recipients[6]);
 
 
-        $this->assertCount(2, $sender->requests()->incoming()->get());
-        $this->assertCount(1, $recipients[3]->requests()->incoming()->get());
-        $this->assertCount(0, $recipients[0]->requests()->incoming()->get());
+        $this->assertCount(2, $sender->requests(\Hootlex\Friendships\Direction::INCOMING)->get());
+        $this->assertCount(1, $recipients[3]->requests(\Hootlex\Friendships\Direction::INCOMING)->get());
+        $this->assertCount(1, $recipients[0]->requests(\Hootlex\Friendships\Direction::INCOMING)->get());
+
+        // Incoming + accepted/denied/pending
+        $this->assertCount(1, $sender->requests(\Hootlex\Friendships\Direction::INCOMING)->accepted()->get());
+        $this->assertCount(1, $sender->requests(\Hootlex\Friendships\Direction::INCOMING)->pending()->get());
+        $this->assertCount(0, $sender->requests(\Hootlex\Friendships\Direction::INCOMING)->denied()->get());
+    }
+
+    /** @test */
+    public function it_returns_outgoing_requests(){
+        $sender = createUser();
+        $recipients = createUser([], 7);
+
+        $sender->befriend($recipients[0]); // sender: 1
+        $sender->befriend($recipients[1]); // sender: 2
+        $sender->befriend($recipients[2]); // sender: 3
+        $sender->befriend($recipients[3]); // sender: 4
+
+        $recipients[0]->acceptFriendRequest($sender);
+        $recipients[1]->acceptFriendRequest($sender);
+        $recipients[2]->denyFriendRequest($sender);
+        $recipients[3]->befriend($sender); // /!\ Sender firstly request to be friend
+        $recipients[5]->befriend($sender);
+        $recipients[6]->befriend($sender);
+        $sender->acceptFriendRequest($recipients[6]);
+
+
+        $this->assertCount(4, $sender->requests(\Hootlex\Friendships\Direction::OUTGOING)->get());
+        $this->assertCount(0, $recipients[3]->requests(\Hootlex\Friendships\Direction::OUTGOING)->get());
+        $this->assertCount(0, $recipients[0]->requests(\Hootlex\Friendships\Direction::OUTGOING)->get());
+        $this->assertCount(1, $recipients[5]->requests(\Hootlex\Friendships\Direction::OUTGOING)->get());
+
+        // Outgoing + accepted/denied/pending
+        $this->assertCount(2, $sender->requests(\Hootlex\Friendships\Direction::OUTGOING)->accepted()->get());
+        $this->assertCount(1, $sender->requests(\Hootlex\Friendships\Direction::OUTGOING)->pending()->get());
+        $this->assertCount(1, $sender->requests(\Hootlex\Friendships\Direction::OUTGOING)->denied()->get());
     }
 }
