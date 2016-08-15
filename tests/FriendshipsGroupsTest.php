@@ -106,6 +106,127 @@ class FriendshipsGroupsTest extends TestCase
         $this->assertCount(5, $sender->getFriends(0, 'family'));
         $this->assertCount(10, $sender->getFriends());
     }
-    
+
+
+    /** @test */
+    public function it_returns_all_user_friendships_by_group()
+    {
+        $sender     = createUser();
+        $recipients = createUser([], 5);
+
+        foreach ($recipients as $key=>$recipient) {
+
+            $sender->befriend($recipient);
+
+            if ($key < 4) {
+
+                $recipient->acceptFriendRequest($sender);
+                if ($key < 3) {
+                    $sender->groupFriend($recipient, 'acquaintances');
+                }
+                else {
+                    $sender->groupFriend($recipient, 'family');
+                }
+
+            }
+            else {
+                $recipient->denyFriendRequest($sender);
+            }
+
+        }
+
+        //Assertions
+
+        $this->assertCount(3, $sender->getAllFriendships('acquaintances'));
+        $this->assertCount(1, $sender->getAllFriendships('family'));
+        $this->assertCount(0, $sender->getAllFriendships('close_friends'));
+        $this->assertCount(4, $sender->getAllFriendships('whatever'));
+    }
+
+
+    /** @test */
+    public function it_returns_accepted_user_friendships_by_group()
+    {
+        $sender     = createUser();
+        $recipients = createUser([], 4);
+
+        foreach ($recipients as $recipient) {
+            $sender->befriend($recipient);
+        }
+
+        $recipients[0]->acceptFriendRequest($sender);
+        $recipients[1]->acceptFriendRequest($sender);
+        $recipients[2]->denyFriendRequest($sender);
+
+        $sender->groupFriend($recipients[0], 'family');
+        $sender->groupFriend($recipients[1], 'family');
+
+        $this->assertCount(2, $sender->getAcceptedFriendships('family'));
+
+    }
+
+    /** @test */
+    public function it_returns_accepted_user_friendships_number_by_group()
+    {
+        $sender     = createUser();
+        $recipients = createUser([], 20)->chunk(5);
+
+        foreach ($recipients->shift() as $recipient) {
+            $sender->befriend($recipient);
+            $recipient->acceptFriendRequest($sender);
+            $sender->groupFriend($recipient, 'acquaintances');
+        }
+
+        //Assertions
+
+        $this->assertEquals(4, $sender->getFriendsCount('acquaintances'));
+        $this->assertEquals(0, $sender->getFriendsCount('family'));
+        $this->assertEquals(0, $recipient->getFriendsCount('acquaintances'));
+        $this->assertEquals(0, $recipient->getFriendsCount('family'));
+    }
+
+
+    /** @test */
+    public function it_returns_user_friends_by_group_per_page()
+    {
+        $sender     = createUser();
+        $recipients = createUser([], 6);
+
+        foreach ($recipients as $recipient) {
+            $sender->befriend($recipient);
+        }
+
+        $recipients[0]->acceptFriendRequest($sender);
+        $recipients[1]->acceptFriendRequest($sender);
+
+        $recipients[2]->denyFriendRequest($sender);
+
+        $recipients[3]->acceptFriendRequest($sender);
+        $recipients[4]->acceptFriendRequest($sender);
+
+        $sender->groupFriend($recipients[0], 'acquaintances');
+        $sender->groupFriend($recipients[1], 'acquaintances');
+        $sender->groupFriend($recipients[3], 'acquaintances');
+        $sender->groupFriend($recipients[4], 'acquaintances');
+
+        $sender->groupFriend($recipients[0], 'close_friends');
+        $sender->groupFriend($recipients[3], 'close_friends');
+
+        $sender->groupFriend($recipients[4], 'family');
+
+        //Assertions
+
+        $this->assertCount(2, $sender->getFriends(2, 'acquaintances'));
+        $this->assertCount(4, $sender->getFriends(0, 'acquaintances'));
+        $this->assertCount(4, $sender->getFriends(10, 'acquaintances'));
+
+        $this->assertCount(2, $sender->getFriends(0, 'close_friends'));
+        $this->assertCount(2, $sender->getFriends(1, 'close_friends'));
+
+        $this->assertCount(1, $sender->getFriends(0, 'family'));
+
+        $this->containsOnlyInstancesOf(\App\User::class, $sender->getFriends(0, 'acquaintances'));
+    }
+
     
 }
