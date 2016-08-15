@@ -140,7 +140,7 @@ class FriendshipsGroupsTest extends TestCase
         $this->assertCount(3, $sender->getAllFriendships('acquaintances'));
         $this->assertCount(1, $sender->getAllFriendships('family'));
         $this->assertCount(0, $sender->getAllFriendships('close_friends'));
-        $this->assertCount(4, $sender->getAllFriendships('whatever'));
+        $this->assertCount(5, $sender->getAllFriendships('whatever'));
     }
 
 
@@ -179,7 +179,7 @@ class FriendshipsGroupsTest extends TestCase
 
         //Assertions
 
-        $this->assertEquals(4, $sender->getFriendsCount('acquaintances'));
+        $this->assertEquals(5, $sender->getFriendsCount('acquaintances'));
         $this->assertEquals(0, $sender->getFriendsCount('family'));
         $this->assertEquals(0, $recipient->getFriendsCount('acquaintances'));
         $this->assertEquals(0, $recipient->getFriendsCount('family'));
@@ -221,7 +221,7 @@ class FriendshipsGroupsTest extends TestCase
         $this->assertCount(4, $sender->getFriends(10, 'acquaintances'));
 
         $this->assertCount(2, $sender->getFriends(0, 'close_friends'));
-        $this->assertCount(2, $sender->getFriends(1, 'close_friends'));
+        $this->assertCount(1, $sender->getFriends(1, 'close_friends'));
 
         $this->assertCount(1, $sender->getFriends(0, 'family'));
 
