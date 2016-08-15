@@ -108,7 +108,7 @@ class Friendship extends Model
                         $query->where($groups_pvt_tbl . '.friend_id', '!=', $model->getKey())
                             ->where($groups_pvt_tbl . '.friend_type', '=', $model->getMorphClass());
                     })
-                    ->orWhere($groups_pvt_tbl . '.friend_type', '!=', $model->getMorphClass());;
+                    ->orWhere($groups_pvt_tbl . '.friend_type', '!=', $model->getMorphClass());
             });
 
         }
