@@ -360,6 +360,92 @@ class FriendshipsTest extends TestCase
         
         $this->containsOnlyInstancesOf(\App\User::class, $sender->getFriendsOfFriends());
     }
-    
-    
+
+    /** @test */
+    public function it_returns_user_mutual_friends()
+    {
+        $sender     = createUser();
+        $recipients = createUser([], 2);
+        $fofs       = createUser([], 5)->chunk(3);
+
+        foreach ($recipients as $recipient) {
+            $sender->befriend($recipient);
+            $recipient->acceptFriendRequest($sender);
+
+            //add some friends to each recipient too
+            foreach ($fofs->shift() as $fof) {
+                $recipient->befriend($fof);
+                $fof->acceptFriendRequest($recipient);
+                $fof->befriend($sender);
+                $sender->acceptFriendRequest($fof);
+            }
+        }
+
+        $this->assertCount(3, $sender->getMutualFriends($recipients[0]));
+        $this->assertCount(3, $recipients[0]->getMutualFriends($sender));
+
+        $this->assertCount(2, $sender->getMutualFriends($recipients[1]));
+        $this->assertCount(2, $recipients[1]->getMutualFriends($sender));
+
+        $this->containsOnlyInstancesOf(\App\User::class, $sender->getMutualFriends($recipients[0]));
+    }
+
+    /** @test */
+    public function it_returns_user_mutual_friends_per_page()
+    {
+        $sender     = createUser();
+        $recipients = createUser([], 2);
+        $fofs       = createUser([], 8)->chunk(5);
+
+        foreach ($recipients as $recipient) {
+            $sender->befriend($recipient);
+            $recipient->acceptFriendRequest($sender);
+
+            //add some friends to each recipient too
+            foreach ($fofs->shift() as $fof) {
+                $recipient->befriend($fof);
+                $fof->acceptFriendRequest($recipient);
+                $fof->befriend($sender);
+                $sender->acceptFriendRequest($fof);
+            }
+        }
+
+        $this->assertCount(2, $sender->getMutualFriends($recipients[0], 2));
+        $this->assertCount(5, $sender->getMutualFriends($recipients[0], 0));
+        $this->assertCount(5, $sender->getMutualFriends($recipients[0], 10));
+        $this->assertCount(2, $recipients[0]->getMutualFriends($sender, 2));
+        $this->assertCount(5, $recipients[0]->getMutualFriends($sender, 0));
+        $this->assertCount(5, $recipients[0]->getMutualFriends($sender, 10));
+
+        $this->assertCount(1, $recipients[1]->getMutualFriends($recipients[0], 10));
+
+        $this->containsOnlyInstancesOf(\App\User::class, $sender->getMutualFriends($recipients[0], 2));
+    }
+
+    /** @test */
+    public function it_returns_user_mutual_friends_number()
+    {
+        $sender     = createUser();
+        $recipients = createUser([], 2);
+        $fofs       = createUser([], 5)->chunk(3);
+
+        foreach ($recipients as $recipient) {
+            $sender->befriend($recipient);
+            $recipient->acceptFriendRequest($sender);
+
+            //add some friends to each recipient too
+            foreach ($fofs->shift() as $fof) {
+                $recipient->befriend($fof);
+                $fof->acceptFriendRequest($recipient);
+                $fof->befriend($sender);
+                $sender->acceptFriendRequest($fof);
+            }
+        }
+
+        $this->assertEquals(3, $sender->getMutualFriendsCount($recipients[0]));
+        $this->assertEquals(3, $recipients[0]->getMutualFriendsCount($sender));
+
+        $this->assertEquals(2, $sender->getMutualFriendsCount($recipients[1]));
+        $this->assertEquals(2, $recipients[1]->getMutualFriendsCount($sender));
+    }
 }
