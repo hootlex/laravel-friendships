@@ -2,6 +2,7 @@
 
 namespace Hootlex\Friendships\Traits;
 
+use Hootlex\Friendships\Direction;
 use Hootlex\Friendships\Models\Friendship;
 use Hootlex\Friendships\Status;
 use Illuminate\Database\Eloquent\Model;
@@ -23,7 +24,7 @@ trait Friendable
             'status' => Status::PENDING,
         ]);
 
-        $this->friends()->save($friendship);
+        $this->friendshipRequests()->save($friendship);
 
         return $friendship;
 
@@ -98,7 +99,7 @@ trait Friendable
             'status' => Status::BLOCKED,
         ]);
 
-        return $this->friends()->save($friendship);
+        return $this->friendshipRequests()->save($friendship);
     }
 
     /**
@@ -126,7 +127,7 @@ trait Friendable
      */
     public function getAllFriendships()
     {
-        return $this->findFriendships()->get();
+        return $this->findRequests()->get();
     }
 
     /**
@@ -135,7 +136,7 @@ trait Friendable
      */
     public function getPendingFriendships()
     {
-        return $this->findFriendships(Status::PENDING)->get();
+        return $this->findRequests(Status::PENDING)->get();
     }
 
     /**
@@ -143,7 +144,7 @@ trait Friendable
      */
     public function getAcceptedFriendships()
     {
-        return $this->findFriendships(Status::ACCEPTED)->get();
+        return $this->findRequests(Status::ACCEPTED)->get();
     }
 
     /**
@@ -152,7 +153,7 @@ trait Friendable
      */
     public function getDeniedFriendships()
     {
-        return $this->findFriendships(Status::DENIED)->get();
+        return $this->findRequests(Status::DENIED)->get();
     }
 
     /**
@@ -161,7 +162,7 @@ trait Friendable
      */
     public function getBlockedFriendships()
     {
-        return $this->findFriendships(Status::BLOCKED)->get();
+        return $this->findRequests(Status::BLOCKED)->get();
     }
 
     /**
@@ -171,7 +172,7 @@ trait Friendable
      */
     public function hasBlocked(Model $recipient)
     {
-        return $this->friends()->whereRecipient($recipient)->whereStatus(Status::BLOCKED)->exists();
+        return $this->friendshipRequests()->whereRecipient($recipient)->whereStatus(Status::BLOCKED)->exists();
     }
 
     /**
@@ -203,9 +204,9 @@ trait Friendable
     public function getFriends($perPage = 0)
     {
         if ($perPage == 0) {
-            return $this->getFriendsQueryBuilder()->get();
+            return $this->friendships()->get();
         } else {
-            return $this->getFriendsQueryBuilder()->paginate($perPage);
+            return $this->friendships()->paginate($perPage);
         }
     }
 
@@ -234,7 +235,7 @@ trait Friendable
      */
     public function getFriendsCount()
     {
-        $friendsCount = $this->findFriendships(Status::ACCEPTED)->count();
+        $friendsCount = $this->findRequests(Status::ACCEPTED)->count();
         return $friendsCount;
     }
 
@@ -272,19 +273,26 @@ trait Friendable
     }
 
     /**
-     * @param $status
+     * @param int $status
+     * @param int $direction
      *
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    private function findFriendships($status = null)
+    private function findRequests($status = null, $direction = Direction::ALL)
     {
-        $query = Friendship::where(function ($query) {
+        $query = Friendship::where(function ($query) use ($direction) {
+            if (($direction & Direction::OUTGOING) == Direction::OUTGOING) {
                 $query->where(function ($q) {
                     $q->whereSender($this);
-                })->orWhere(function ($q) {
+                });
+            }
+
+            if (($direction & Direction::INCOMING) == Direction::INCOMING) {
+                $query->orWhere(function ($q) {
                     $q->whereRecipient($this);
                 });
-            });
+            }
+        });
 
         //if $status is passed, add where clause
         if(!is_null($status)){
@@ -294,21 +302,6 @@ trait Friendable
         return $query;
     }
 
-
-    /**
-     * Get the query builder of the 'friend' model
-     *
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    private function getFriendsQueryBuilder()
-    {
-        $friendships = $this->findFriendships(Status::ACCEPTED)->get(['sender_id', 'recipient_id']);
-        $recipients = $friendships->lists('recipient_id')->all();
-        $senders = $friendships->lists('sender_id')->all();
-
-        return $this->where('id', '!=', $this->getKey())->whereIn('id', array_merge($recipients, $senders));
-    }
-
     /**
      * Get the query builder for friendsOfFriends ('friend' model)
      *
@@ -316,7 +309,7 @@ trait Friendable
      */
     private function friendsOfFriendsQueryBuilder()
     {
-        $friendships = $this->findFriendships(Status::ACCEPTED)->get(['sender_id', 'recipient_id']);
+        $friendships = $this->findRequests(Status::ACCEPTED)->get(['sender_id', 'recipient_id']);
         $recipients = $friendships->lists('recipient_id')->all();
         $senders = $friendships->lists('sender_id')->all();
 
@@ -350,9 +343,47 @@ trait Friendable
     /**
      * @return \Illuminate\Database\Eloquent\Relations\MorphMany
      */
-    public function friends()
+    protected function friendshipRequests()
     {
         return $this->morphMany(Friendship::class, 'sender');
     }
 
+    /**
+     * Get friendships of this user.
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function friendships()
+    {
+        $friendships = $this->findRequests(Status::ACCEPTED)->get(['sender_id', 'recipient_id']);
+        $recipients = $friendships->lists('recipient_id')->all();
+        $senders = $friendships->lists('sender_id')->all();
+
+        return $this->where('id', '!=', $this->getKey())->whereIn('id', array_merge($recipients, $senders));
+    }
+
+    /**
+     * Get requests of this user.
+     *
+     * @param int $direction
+     *
+     * @return Friendship|\Illuminate\Database\Eloquent\Builder
+     */
+    public function requests($direction = Direction::ALL)
+    {
+        $friendships = $this->findRequests(null, $direction);
+
+        return $friendships;
+    }
+
+    /**
+     * @deprecated Will be removed in version 2
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     */
+    public function friends()
+    {
+        @trigger_error(sprintf('The '.__METHOD__.' method was deprecated in version 1.1 and will be removed in version 2.0. You should implement this method yourself in %s.', get_class($this)), E_USER_DEPRECATED);
+        return $this->morphMany(Friendship::class, 'sender');
+    }
 }

@@ -5,6 +5,15 @@ namespace Hootlex\Friendships\Models;
 use Hootlex\Friendships\Status;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Class Friendship
+ * @package Hootlex\Friendships\Models
+ *
+ * @method \Illuminate\Database\Eloquent\Builder|Friendship pending()  Get pending friendships
+ * @method \Illuminate\Database\Eloquent\Builder|Friendship accepted() Get accepted friendships
+ * @method \Illuminate\Database\Eloquent\Builder|Friendship blocked()  Get blocked friendships
+ * @method \Illuminate\Database\Eloquent\Builder|Friendship denied()   Get denied friendships
+ */
 class Friendship extends Model
 {
     /**
@@ -65,6 +74,42 @@ class Friendship extends Model
     {
         return $query->where('sender_id', $model->getKey())
             ->where('sender_type', $model->getMorphClass());
+    }
+
+    /**
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder|Friendship
+     */
+    public function scopePending($query)
+    {
+        return $query->whereStatus(Status::PENDING);
+    }
+
+    /**
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @return Friendship
+     */
+    public function scopeAccepted($query)
+    {
+        return $query->whereStatus(Status::ACCEPTED);
+    }
+
+    /**
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder|Friendship
+     */
+    public function scopeBlocked($query)
+    {
+        return $query->whereStatus(Status::BLOCKED);
+    }
+
+    /**
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder|Friendship
+     */
+    public function scopeDenied($query)
+    {
+        return $query->whereStatus(Status::DENIED);
     }
 
     /**

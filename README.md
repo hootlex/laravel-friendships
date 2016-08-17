@@ -102,32 +102,50 @@ $user->getFriendship($recipient);
 
 #### Get a list of all Friendships
 ```php
+// (return a collection of friendships)
 $user->getAllFriendships();
+// or with the new method (return query builder):
+$user->requests();
 ```
 
 #### Get a list of pending Friendships
 ```php
+// (return a collection of friendships)
 $user->getPendingFriendships();
+// or with the new method (return query builder):
+$user->requests()->pending();
 ```
 
 #### Get a list of accepted Friendships
 ```php
+// (return a collection of friendships)
 $user->getAcceptedFriendships();
+// or with the new method (return query builder):
+$user->requests()->accepted();
 ```
 
 #### Get a list of denied Friendships
 ```php
+// (return a collection of friendships)
 $user->getDeniedFriendships();
+// or with the new method (return query builder):
+$user->requests()->denied();
 ```
 
 #### Get a list of blocked Friendships
 ```php
+// (return a collection of friendships)
 $user->getBlockedFriendships();
+// or with the new method (return query builder):
+$user->requests()->blocked();
 ```
 
 #### Get a list of pending Friend Requests
 ```php
+// (return a collection of friendships)
 $user->getFriendRequests();
+// or with the new method (return query builder):
+$user->requests(Direction::INCOMING)->pending();
 ```
 
 #### Get the number of Friends 
@@ -140,6 +158,8 @@ $user->getFriendsCount();
 #### Get Friends
 ```php
 $user->getFriends();
+// or with the new method (return query builder):
+$user->friendships();
 ```
 
 #### Get Friends Paginated
