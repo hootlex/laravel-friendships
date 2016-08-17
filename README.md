@@ -175,6 +175,11 @@ $user->getFriendsCount();
 $user->getFriendsCount($group_name);
 ```
 
+#### Get the number of mutual Friends with another user
+```php
+$user->getMutualFriendsCount($otherUser);
+```
+
 ### To get a collection of friend models (ex. User) use the following methods:
 #### Get Friends
 ```php
@@ -195,3 +200,7 @@ $user->getFriends($perPage = 20);
 ```php
 $user->getFriendsOfFriends($perPage = 20);
 ```
+
+#### Get mutual Friends with another user
+```php
+$user->getMutualFriends($otherUser, $perPage = 20);
