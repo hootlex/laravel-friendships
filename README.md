@@ -9,7 +9,7 @@ You can easily design a Facebook like Friend System.
 - Accept Friend Requests
 - Deny Friend Requests
 - Block Another Model
-- Group user Friends to personal groups (defined in config): family, best friends, acquaintances
+- Group Friends
 
 ## Installation
 
