@@ -173,7 +173,7 @@ trait Friendable
      */
     public function unblockFriend(Model $recipient)
     {
-        return $this->findFriendship($recipient)->delete();
+        return $this->findFriendship($recipient)->whereSender($this)->delete();
     }
 
     /**
