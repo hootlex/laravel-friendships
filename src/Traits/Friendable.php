@@ -155,7 +155,7 @@ trait Friendable
     {
         // if there is a friendship between the two users and the sender is not blocked
         // by the recipient user then delete the friendship
-        if(! $this->isBlockedBy($recipient)){
+        if (!$this->isBlockedBy($recipient)) {
             $this->findFriendship($recipient)->delete();
         }
 
@@ -350,7 +350,7 @@ trait Friendable
     {
         // if user has Blocked the recipient and changed his mind
         // he can send a friend request after unblocking
-        if($this->hasBlocked($recipient)){
+        if ($this->hasBlocked($recipient)) {
             $this->unblockFriend($recipient);
             return true;
         }
@@ -358,7 +358,7 @@ trait Friendable
         // if sender has a friendship with the recipient return false
         if ($friendship = $this->getFriendship($recipient)) {
             // if previous friendship was Denied then let the user send fr
-            if($friendship->status != Status::DENIED){
+            if ($friendship->status != Status::DENIED) {
                 return false;
             }
         }
@@ -393,7 +393,7 @@ trait Friendable
         })->whereGroup($this, $group_slug);
 
         //if $status is passed, add where clause
-        if(!is_null($status)){
+        if (!is_null($status)) {
             $query->where('status', $status);
         }
 
@@ -409,7 +409,7 @@ trait Friendable
      */
     private function getFriendsQueryBuilder($group_slug = '')
     {
-        $fr_fields        = ['sender_id', 'recipient_id'];
+        $fr_fields = ['sender_id', 'recipient_id'];
 
         $friendships = $this->findFriendships(Status::ACCEPTED, $group_slug)->get(['sender_id', 'recipient_id']);
         $recipients  = $friendships->lists('recipient_id')->all();
