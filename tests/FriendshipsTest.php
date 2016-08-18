@@ -6,7 +6,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class FriendshipsTest extends TestCase
 {
-    // use DatabaseTransactions;
+    use DatabaseTransactions;
     
     /** @test */
     public function user_can_send_a_friend_request()
