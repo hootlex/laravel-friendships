@@ -26,7 +26,8 @@
         "laravel/laravel": "5.*",
         "codeclimate/php-test-reporter": "^0.3.2",
         "mockery/mockery": "^0.9.5",
-        "doctrine/dbal": "^2.5"
+        "doctrine/dbal": "^2.5",
+        "symfony/phpunit-bridge": "^3.1"
     },
     "autoload": {
         "psr-4": {

@@ -1,26 +1,26 @@
 <?php
 
-use Illuminate\Foundation\Testing\DatabaseTransactions;
-
 abstract class Test extends TestCase
 {
-    public function setUp() {
-        parent::setUp();
+    public function createApplication()
+    {
+        $app = require __DIR__ . '/../vendor/laravel/laravel/bootstrap/app.php';
 
-        /*
-         * To show deprecated errors, you can set the env PHPUNIT_SHOW_DEPRECATED as below:
-         * PHPUNIT_SHOW_DEPRECATED=1 vendor/bin/phpunit
-         */
-        if (getenv('PHPUNIT_SHOW_DEPRECATED') == true) {
-            set_error_handler(function ($errno, $errstr, $errfile, $errline) {
-                switch ($errno) {
-                    case E_USER_DEPRECATED:
-                        echo("Deprecated : $errstr \n in $errfile on line $errline \n");
-                        break;
-                }
-
-                return true;
-            }, E_USER_DEPRECATED);
+        if ( ! $app->hasBeenBootstrapped())
+        {
+            $app->bootstrapWith(
+                [
+                    'Illuminate\Foundation\Bootstrap\DetectEnvironment',
+                    'Illuminate\Foundation\Bootstrap\LoadConfiguration',
+                    'Illuminate\Foundation\Bootstrap\ConfigureLogging',
+                    'Illuminate\Foundation\Bootstrap\RegisterFacades',
+                    'Illuminate\Foundation\Bootstrap\SetRequestForConsole',
+                    'Illuminate\Foundation\Bootstrap\RegisterProviders',
+                    'Illuminate\Foundation\Bootstrap\BootProviders',
+                ]
+            );
         }
+
+        return $app;
     }
 }
