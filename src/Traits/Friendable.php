@@ -279,6 +279,33 @@ trait Friendable
             return $this->getFriendsQueryBuilder($group_slug)->paginate($perPage);
         }
     }
+    
+    /**
+     * This method will not return Friendship models
+     * It will return the 'friends' models. ex: App\User
+     *
+     * @param int $perPage Number
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function getMutualFriends(Model $other, $perPage = 0)
+    {
+        if ($perPage == 0) {
+            return $this->getMutualFriendsQueryBuilder($other)->get();
+        } else {
+            return $this->getMutualFriendsQueryBuilder($other)->paginate($perPage);
+        }
+    }
+    
+    /**
+     * Get the number of friends
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function getMutualFriendsCount($other)
+    {
+        return $this->getMutualFriendsQueryBuilder($other)->count();
+    }
 
     /**
      * This method will not return Friendship models
@@ -386,6 +413,31 @@ trait Friendable
         $senders     = $friendships->lists('sender_id')->all();
 
         return $this->where('id', '!=', $this->getKey())->whereIn('id', array_merge($recipients, $senders));
+    }
+    
+    /**
+     * Get the query builder of the 'friend' model
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    private function getMutualFriendsQueryBuilder(Model $other)
+    {
+        $user1['friendships'] = $this->findFriendships(Status::ACCEPTED)->get(['sender_id', 'recipient_id']);
+        $user1['recipients'] = $user1['friendships']->lists('recipient_id')->all();
+        $user1['senders'] = $user1['friendships']->lists('sender_id')->all();
+        
+        $user2['friendships'] = $other->findFriendships(Status::ACCEPTED)->get(['sender_id', 'recipient_id']);
+        $user2['recipients'] = $user2['friendships']->lists('recipient_id')->all();
+        $user2['senders'] = $user2['friendships']->lists('sender_id')->all();
+        
+        $mutual_friendships = array_unique(
+                                  array_intersect(
+                                      array_merge($user1['recipients'], $user1['senders']),
+                                      array_merge($user2['recipients'], $user2['senders'])
+                                  )
+                              );
+
+        return $this->whereNotIn('id', [$this->getKey(), $other->getKey()])->whereIn('id', $mutual_friendships);
     }
 
     /**
