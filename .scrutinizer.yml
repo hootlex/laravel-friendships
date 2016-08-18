@@ -18,5 +18,4 @@ build:
         php: '5.6.16'
 
 tools:
-    external_code_coverage:
-        timeout: 2100 # Timeout in seconds.
+    external_code_coverage: true
