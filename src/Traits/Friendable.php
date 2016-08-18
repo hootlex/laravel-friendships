@@ -404,7 +404,7 @@ trait Friendable
         }
 
         // if sender has a friendship with the recipient return false
-        if ($friendship = $this->getFriendship($recipient)) {
+        if ($friendship = $this->findFriendship($recipient)->first()) {
             // if previous friendship was Denied then let the user send fr
             if ($friendship->status != Status::DENIED) {
                 return false;
