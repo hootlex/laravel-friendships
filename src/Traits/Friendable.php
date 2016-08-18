@@ -153,8 +153,11 @@ trait Friendable
      */
     public function blockFriend(Model $recipient)
     {
-        //if there is a friendship between two users delete it
-        $this->findFriendship($recipient)->delete();
+        // if there is a friendship between the two users and the sender is not blocked
+        // by the recipient user then delete the friendship
+        if(! $this->isBlockedBy($recipient)){
+            $this->findFriendship($recipient)->delete();
+        }
 
         $friendship = (new Friendship)->fillRecipient($recipient)->fill([
             'status' => Status::BLOCKED,

@@ -6,7 +6,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class FriendshipsTest extends TestCase
 {
-    use DatabaseTransactions;
+    // use DatabaseTransactions;
     
     /** @test */
     public function user_can_send_a_friend_request()
@@ -155,6 +155,23 @@ class FriendshipsTest extends TestCase
         
         $this->assertFalse($recipient->isBlockedBy($sender));
         $this->assertFalse($sender->hasBlocked($recipient));
+    }
+    
+    /** @test */
+    public function user_block_is_permanent_unless_blocker_decides_to_unblock()
+    {
+        $sender    = createUser();
+        $recipient = createUser();
+        
+        $sender->blockFriend($recipient);
+        $this->assertTrue($recipient->isBlockedBy($sender));
+        
+        // now recipient blocks sender too
+        $recipient->blockFriend($sender);
+        
+        // expect that both users have blocked each other
+        $this->assertTrue($sender->isBlockedBy($recipient));
+        $this->assertTrue($recipient->isBlockedBy($sender));
     }
     
     /** @test */
