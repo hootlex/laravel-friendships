@@ -24,4 +24,9 @@ script:
 - composer install --dev --prefer-source --no-interaction
 - php artisan migrate
 - cd -
-- vendor/bin/phpunit tests
+- phpenv config-add xdebug.ini
+- vendor/bin/phpunit --coverage-clover=coverage.clover
+
+after_install:
+  - wget https://scrutinizer-ci.com/ocular.phar
+  - php ocular.phar code-coverage:upload --format=php-clover coverage.clover
