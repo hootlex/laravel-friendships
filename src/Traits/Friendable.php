@@ -201,16 +201,21 @@ trait Friendable
     }
 
     /**
+     * @deprecated Will be removed in version 2
+     *
      * @param Model $recipient
      *
      * @return \Hootlex\Friendships\Models\Friendship
      */
     public function getFriendship(Model $recipient)
     {
+        @trigger_error(sprintf('The ' . __METHOD__ . ' method was deprecated in version 1.1 and will be removed in version 2.0. You should implement this method yourself in %s.', get_class($this)), E_USER_DEPRECATED);
         return $this->findFriendship($recipient)->first();
     }
 
     /**
+     * @deprecated Will be removed in version 2
+     *
      * @return \Illuminate\Database\Eloquent\Collection
      *
      * @param string $groupSlug
@@ -218,10 +223,13 @@ trait Friendable
      */
     public function getAllFriendships($groupSlug = '')
     {
+        @trigger_error(sprintf('The ' . __METHOD__ . ' method was deprecated in version 1.1 and will be removed in version 2.0. You should implement this method yourself in %s.', get_class($this)), E_USER_DEPRECATED);
         return $this->findFriendships(null, $groupSlug)->get();
     }
 
     /**
+     * @deprecated Will be removed in version 2
+     *
      * @return \Illuminate\Database\Eloquent\Collection
      *
      * @param string $groupSlug
@@ -229,10 +237,13 @@ trait Friendable
      */
     public function getPendingFriendships($groupSlug = '')
     {
+        @trigger_error(sprintf('The ' . __METHOD__ . ' method was deprecated in version 1.1 and will be removed in version 2.0. You should implement this method yourself in %s.', get_class($this)), E_USER_DEPRECATED);
         return $this->findFriendships(Status::PENDING, $groupSlug)->get();
     }
 
     /**
+     * @deprecated Will be removed in version 2
+     *
      * @return \Illuminate\Database\Eloquent\Collection
      *
      * @param string $groupSlug
@@ -240,24 +251,31 @@ trait Friendable
      */
     public function getAcceptedFriendships($groupSlug = '')
     {
+        @trigger_error(sprintf('The ' . __METHOD__ . ' method was deprecated in version 1.1 and will be removed in version 2.0. You should implement this method yourself in %s.', get_class($this)), E_USER_DEPRECATED);
         return $this->findFriendships(Status::ACCEPTED, $groupSlug)->get();
     }
 
     /**
+     * @deprecated Will be removed in version 2
+     *
      * @return \Illuminate\Database\Eloquent\Collection
      *
      */
     public function getDeniedFriendships()
     {
+        @trigger_error(sprintf('The ' . __METHOD__ . ' method was deprecated in version 1.1 and will be removed in version 2.0. You should implement this method yourself in %s.', get_class($this)), E_USER_DEPRECATED);
         return $this->findFriendships(Status::DENIED)->get();
     }
 
     /**
+     * @deprecated Will be removed in version 2
+     *
      * @return \Illuminate\Database\Eloquent\Collection
      *
      */
     public function getBlockedFriendships()
     {
+        @trigger_error(sprintf('The ' . __METHOD__ . ' method was deprecated in version 1.1 and will be removed in version 2.0. You should implement this method yourself in %s.', get_class($this)), E_USER_DEPRECATED);
         return $this->findFriendships(Status::BLOCKED)->get();
     }
 
@@ -282,16 +300,21 @@ trait Friendable
     }
 
     /**
+     * @deprecated Will be removed in version 2
+     *
      * @return \Illuminate\Database\Eloquent\Collection
      */
     public function getFriendRequests()
     {
+        @trigger_error(sprintf('The ' . __METHOD__ . ' method was deprecated in version 1.1 and will be removed in version 2.0. You should implement this method yourself in %s.', get_class($this)), E_USER_DEPRECATED);
         return Friendship::whereRecipient($this)->whereStatus(Status::PENDING)->get();
     }
 
     /**
      * This method will not return Friendship models
      * It will return the 'friends' models. ex: App\User
+     *
+     * @deprecated Will be removed in version 2
      *
      * @param int $perPage Number
      * @param string $groupSlug
@@ -300,12 +323,15 @@ trait Friendable
      */
     public function getFriends($perPage = 0, $groupSlug = '')
     {
+        @trigger_error(sprintf('The ' . __METHOD__ . ' method was deprecated in version 1.1 and will be removed in version 2.0. You should implement this method yourself in %s.', get_class($this)), E_USER_DEPRECATED);
         return $this->getOrPaginate($this->getFriendsQueryBuilder($groupSlug), $perPage);
     }
-    
+
     /**
      * This method will not return Friendship models
      * It will return the 'friends' models. ex: App\User
+     *
+     * @deprecated Will be removed in version 2
      *
      * @param int $perPage Number
      *
@@ -313,16 +339,20 @@ trait Friendable
      */
     public function getMutualFriends(Model $other, $perPage = 0)
     {
+        @trigger_error(sprintf('The ' . __METHOD__ . ' method was deprecated in version 1.1 and will be removed in version 2.0. You should implement this method yourself in %s.', get_class($this)), E_USER_DEPRECATED);
         return $this->getOrPaginate($this->getMutualFriendsQueryBuilder($other), $perPage);
     }
-    
+
     /**
      * Get the number of friends
+     *
+     * @deprecated Will be removed in version 2
      *
      * @return integer
      */
     public function getMutualFriendsCount($other)
     {
+        @trigger_error(sprintf('The ' . __METHOD__ . ' method was deprecated in version 1.1 and will be removed in version 2.0. You should implement this method yourself in %s.', get_class($this)), E_USER_DEPRECATED);
         return $this->getMutualFriendsQueryBuilder($other)->count();
     }
 
@@ -330,13 +360,17 @@ trait Friendable
      * This method will not return Friendship models
      * It will return the 'friends' models. ex: App\User
      *
+     * @deprecated Will be removed in version 2
+     *
      * @param int $perPage Number
      *
      * @return \Illuminate\Database\Eloquent\Collection
      */
     public function getFriendsOfFriends($perPage = 0)
     {
+        @trigger_error(sprintf('The ' . __METHOD__ . ' method was deprecated in version 1.1 and will be removed in version 2.0. You should implement this method yourself in %s.', get_class($this)), E_USER_DEPRECATED);
         return $this->getOrPaginate($this->friendsOfFriendsQueryBuilder(), $perPage);
+
     }
 
 
@@ -344,11 +378,13 @@ trait Friendable
      * Get the number of friends
      *
      * @param string $groupSlug
+     * @deprecated Will be removed in version 2
      *
      * @return integer
      */
     public function getFriendsCount($groupSlug = '')
     {
+        @trigger_error(sprintf('The ' . __METHOD__ . ' method was deprecated in version 1.1 and will be removed in version 2.0. You should implement this method yourself in %s.', get_class($this)), E_USER_DEPRECATED);
         $friendsCount = $this->findFriendships(Status::ACCEPTED, $groupSlug)->count();
         return $friendsCount;
     }
