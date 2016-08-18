@@ -9,7 +9,8 @@ use Test as BaseTest;
 
 /*
  * Test User Personal Friend Groups
-*/
+ * @group legacy
+ */
 class FriendshipsGroupsTest extends BaseTest
 {
     use DatabaseTransactions;
