@@ -11,7 +11,6 @@ sudo: required
 
 before_install:
   - phpenv config-rm xdebug.ini
-  - composer self-update
   - composer install --dev --prefer-source --no-interaction
   - mysql -e 'create database friendships_test;'
 
