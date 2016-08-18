@@ -52,7 +52,7 @@ class User extends Model
 }
 ```
 
-## How to use 
+## How to use
 [Check the Test file to see the package in action](https://github.com/hootlex/laravel-friendships/blob/master/tests/FriendshipsTest.php)
 
 #### Send a Friend Request
@@ -68,21 +68,6 @@ $user->acceptFriendRequest($recipient);
 #### Deny a Friend Request
 ```php
 $user->denyFriendRequest($recipient);
-```
-
-#### Group a Friend
-```php
-$user->groupFriend($friend, $group_name);
-```
-
-#### Remove a Friend from family group
-```php
-$user->ungroupFriend($friend, 'family');
-```
-
-#### Remove a Friend from all groups
-```php
-$user->ungroupFriend($friend);
 ```
 
 #### Remove Friend
@@ -130,11 +115,6 @@ $user->getFriendship($recipient);
 $user->getAllFriendships();
 ```
 
-#### Get a list of all Friendships in specific group
-```php
-$user->getAllFriendships($group_name);
-```
-
 #### Get a list of pending Friendships
 ```php
 $user->getPendingFriendships();
@@ -143,11 +123,6 @@ $user->getPendingFriendships();
 #### Get a list of accepted Friendships
 ```php
 $user->getAcceptedFriendships();
-```
-
-#### Get a list of accepted Friendships in specific group
-```php
-$user->getAcceptedFriendships($group_name);
 ```
 
 #### Get a list of denied Friendships
@@ -165,25 +140,15 @@ $user->getBlockedFriendships();
 $user->getFriendRequests();
 ```
 
-#### Get the number of Friends 
+#### Get the number of Friends
 ```php
 $user->getFriendsCount();
-```
-
-#### Get the number of Friends in specific group
-```php
-$user->getFriendsCount($group_name);
 ```
 
 ### To get a collection of friend models (ex. User) use the following methods:
 #### Get Friends
 ```php
 $user->getFriends();
-```
-
-#### Collection of Friends in specific group paginated:
-```php
-$user->getFriends($perPage = 20, $group_name);
 ```
 
 #### Get Friends Paginated
@@ -194,4 +159,54 @@ $user->getFriends($perPage = 20);
 #### Get Friends of Friends
 ```php
 $user->getFriendsOfFriends($perPage = 20);
+```
+
+#### Collection of Friends in specific group paginated:
+```php
+$user->getFriends($perPage = 20, $group_name);
+```
+
+## Friend groups
+The friend groups are defined in the `config/friendships.php` file.
+The package comes with a few default groups.
+To modify them, or add your own, you need to specify a `slug` and a `key`.
+
+```php
+// config/friendships.php
+...
+'groups' => [
+    'acquaintances' => 0,
+    'close_friends' => 1,
+    'family' => 2
+]
+```
+
+Since you've configured friend groups, you can group/ungroup friends using the following methods.
+
+#### Group a Friend
+```php
+$user->groupFriend($friend, $group_name);
+```
+
+#### Remove a Friend from family group
+```php
+$user->ungroupFriend($friend, 'family');
+```
+
+#### Remove a Friend from all groups
+```php
+$user->ungroupFriend($friend);
+```
+
+#### Get the number of Friends in specific group
+```php
+$user->getFriendsCount($group_name);
+```
+
+### To filter `friendships` by group you can pass a group slug.
+```php
+$user->getAllFriendships($group_name);
+$user->getAcceptedFriendships($group_name);
+$user->getPendingFriendships($group_name);
+...
 ```
