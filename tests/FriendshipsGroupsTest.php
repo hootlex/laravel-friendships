@@ -7,7 +7,7 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Test as BaseTest;
 
-/*
+/**
  * Test User Personal Friend Groups
  * @group legacy
  */
