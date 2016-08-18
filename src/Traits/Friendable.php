@@ -30,7 +30,7 @@ trait Friendable
             'status' => Status::PENDING,
         ]);
 
-        $this->friends()->save($friendship);
+        $this->friendshipRequests()->save($friendship);
       
         Event::fire('friendships.sent', [$this, $recipient]);
 
@@ -185,7 +185,7 @@ trait Friendable
       
         Event::fire('friendships.blocked', [$this, $recipient]);
 
-        return $this->friends()->save($friendship);
+        return $this->friendshipRequests()->save($friendship);
     }
 
     /**
@@ -286,7 +286,7 @@ trait Friendable
      */
     public function hasBlocked(Model $recipient)
     {
-        return $this->friends()->whereRecipient($recipient)->whereStatus(Status::BLOCKED)->exists();
+        return $this->friendshipRequests()->whereRecipient($recipient)->whereStatus(Status::BLOCKED)->exists();
     }
 
     /**
