@@ -23,7 +23,6 @@ script:
 - composer install --dev --prefer-source --no-interaction
 - php artisan migrate
 - cd -
-- phpenv config-add xdebug.ini
 - vendor/bin/phpunit --coverage-clover=coverage.clover
 
 after_install:
