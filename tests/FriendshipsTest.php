@@ -1,13 +1,16 @@
 <?php
 
+require_once 'Test.php';
+
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Test as BaseTest;
 
-class FriendshipsTest extends TestCase
+class FriendshipsTest extends BaseTest
 {
-    // use DatabaseTransactions;
-    
+    use DatabaseTransactions;
+
     /** @test */
     public function user_can_send_a_friend_request()
     {

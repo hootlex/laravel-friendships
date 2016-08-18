@@ -1,17 +1,19 @@
 <?php
 
+require_once 'Test.php';
+
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Test as BaseTest;
 
 /*
  * Test User Personal Friend Groups
 */
-class FriendshipsGroupsTest extends TestCase
+class FriendshipsGroupsTest extends BaseTest
 {
     use DatabaseTransactions;
-    
-    
+
     /** @test */
     public function user_can_add_a_friend_to_a_group()
     {
