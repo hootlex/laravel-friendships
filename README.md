@@ -221,3 +221,6 @@ $user->getAcceptedFriendships($group_name);
 $user->getPendingFriendships($group_name);
 ...
 ```
+
+## Contributing
+See the [CONTRIBUTING](CONTRIBUTING.md) file.
