@@ -102,8 +102,9 @@ trait Friendable
         $friendship       = $this->findFriendship($friend)->whereStatus(Status::ACCEPTED)->first();
         $groups_available = config('friendships.groups', []);
 
-        if (!isset($groups_available[$group_slug]) || empty($friendship))
-            return false;
+        if (!isset($groups_available[$group_slug]) || empty($friendship)) {
+                    return false;
+        }
 
         $group = $friendship->groups()->firstOrCreate([
             'friendship_id' => $friendship->id,
@@ -127,8 +128,9 @@ trait Friendable
         $friendship       = $this->findFriendship($friend)->first();
         $groups_available = config('friendships.groups', []);
 
-        if (empty($friendship))
-            return false;
+        if (empty($friendship)) {
+                    return false;
+        }
 
         $where = [
             'friendship_id' => $friendship->id,
@@ -333,7 +335,7 @@ trait Friendable
      *
      * @param string $group_slug
      *
-     * @return \Illuminate\Database\Eloquent\Collection
+     * @return integer
      */
     public function getFriendsCount($group_slug = '')
     {
@@ -434,11 +436,11 @@ trait Friendable
         $user2['senders'] = $user2['friendships']->lists('sender_id')->all();
         
         $mutual_friendships = array_unique(
-                                  array_intersect(
-                                      array_merge($user1['recipients'], $user1['senders']),
-                                      array_merge($user2['recipients'], $user2['senders'])
-                                  )
-                              );
+                                    array_intersect(
+                                        array_merge($user1['recipients'], $user1['senders']),
+                                        array_merge($user2['recipients'], $user2['senders'])
+                                    )
+                                );
 
         return $this->whereNotIn('id', [$this->getKey(), $other->getKey()])->whereIn('id', $mutual_friendships);
     }
@@ -460,15 +462,15 @@ trait Friendable
 
 
         $fofs = Friendship::where('status', Status::ACCEPTED)
-                          ->where(function ($query) use ($friendIds) {
-                              $query->where(function ($q) use ($friendIds) {
-                                  $q->whereIn('sender_id', $friendIds);
-                              })->orWhere(function ($q) use ($friendIds) {
-                                  $q->whereIn('recipient_id', $friendIds);
-                              });
-                          })
-                          ->whereGroup($this, $group_slug)
-                          ->get(['sender_id', 'recipient_id']);
+                            ->where(function ($query) use ($friendIds) {
+                                $query->where(function ($q) use ($friendIds) {
+                                    $q->whereIn('sender_id', $friendIds);
+                                })->orWhere(function ($q) use ($friendIds) {
+                                    $q->whereIn('recipient_id', $friendIds);
+                                });
+                            })
+                            ->whereGroup($this, $group_slug)
+                            ->get(['sender_id', 'recipient_id']);
 
         $fofIds = array_unique(
             array_merge($fofs->pluck('sender_id')->all(), $fofs->lists('recipient_id')->all())
