@@ -305,7 +305,7 @@ trait Friendable
     /**
      * Get the number of friends
      *
-     * @return \Illuminate\Database\Eloquent\Collection
+     * @return integer
      */
     public function getMutualFriendsCount($other)
     {
