@@ -32,19 +32,4 @@ class FriendFriendshipGroups extends Model
         parent::__construct($attributes);
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function friendship() {
-        return $this->belongsTo('Friendship', 'friendship_id');
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\MorphTo
-     */
-    public function friend() {
-        return $this->morphTo('friend');
-    }
-
-
 }
