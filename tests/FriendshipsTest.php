@@ -94,8 +94,8 @@ class FriendshipsTest extends TestCase
         //send fr
         $sender->befriend($recipient);
 
-        $this->assertTrue($recipient->isSentFriendRequest($sender));
-        $this->assertFalse($sender->isSentFriendRequest($recipient));
+        $this->assertFalse($recipient->isSentFriendRequest($sender));
+        $this->assertTrue($sender->isSentFriendRequest($recipient));
     }
     
     /** @test */
