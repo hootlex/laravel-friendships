@@ -411,7 +411,6 @@ trait Friendable
      */
     private function getFriendsQueryBuilder($group_slug = '')
     {
-        $fr_fields = ['sender_id', 'recipient_id'];
 
         $friendships = $this->findFriendships(Status::ACCEPTED, $group_slug)->get(['sender_id', 'recipient_id']);
         $recipients  = $friendships->lists('recipient_id')->all();
