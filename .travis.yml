@@ -7,21 +7,27 @@ php:
   - 5.6
   - 7.0
 
-sudo: required
+sudo: false
 
-before_install:
-  - composer self-update
+# cache vendor dirs
+cache:
+  directories:
+    - vendor
+    - $HOME/.composer/cache
+
+install:
   - composer install --dev --prefer-source --no-interaction
-  - mysql -e 'create database friendships_test;'
 
+before_script:
+  - mysql -e 'create database friendships_test;'
+  - cp src/database/migrations/create_friendships_table.php vendor/laravel/laravel/database/migrations/2015_11_19_053825_create_friendships_table.php
+  - yes | cp src/database/migrations/create_friendships_groups_table.php vendor/laravel/laravel/database/migrations/2015_11_19_053826_create_friendships_groups_table.php
+  - yes | cp tests/config/friendships.php vendor/laravel/laravel/config/friendships.php
+  - yes | cp tests/Stub_User.php vendor/laravel/laravel/app/User.php
+  - cd vendor/laravel/laravel
+  - composer install --dev --prefer-source --no-interaction
+  - php artisan migrate
+  - cd -
 
 script:
-- cp src/database/migrations/create_friendships_table.php vendor/laravel/laravel/database/migrations/2015_11_19_053825_create_friendships_table.php
-- yes | cp src/database/migrations/create_friendships_groups_table.php vendor/laravel/laravel/database/migrations/2015_11_19_053826_create_friendships_groups_table.php
-- yes | cp tests/config/friendships.php vendor/laravel/laravel/config/friendships.php
-- yes | cp tests/Stub_User.php vendor/laravel/laravel/app/User.php
-- cd vendor/laravel/laravel
-- composer install --dev --prefer-source --no-interaction
-- php artisan migrate
-- cd -
-- vendor/bin/phpunit tests
+  - vendor/bin/phpunit
