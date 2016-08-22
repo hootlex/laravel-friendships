@@ -15,6 +15,12 @@
     <filter>
         <whitelist processUncoveredFilesFromWhitelist="true" addUncoveredFilesFromWhitelist="true">
             <directory suffix=".php">./src</directory>
+            <exclude>
+                <directory suffix=".php">src/config</directory>
+                <directory suffix=".php">src/database/migrations</directory>
+                <file>src/Status.php</file>
+                <file>src/FriendshipsServiceProvider.php</file>
+            </exclude>
         </whitelist>
     </filter>
     <logging>
