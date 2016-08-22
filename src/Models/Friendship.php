@@ -87,28 +87,28 @@ class Friendship extends Model
     /**
      * @param $query
      * @param Model $model
-     * @param string $group_slug
+     * @param string $groupSlug
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeWhereGroup($query, $model, $group_slug)
+    public function scopeWhereGroup($query, $model, $groupSlug)
     {
 
-        $groups_pvt_tbl   = config('friendships.tables.fr_groups_pivot');
-        $friends_pvt_tbl  = config('friendships.tables.fr_pivot');
-        $groups_available = config('friendships.groups', []);
+        $groupsPivotTable   = config('friendships.tables.fr_groups_pivot');
+        $friendsPivotTable  = config('friendships.tables.fr_pivot');
+        $groupsAvailable = config('friendships.groups', []);
 
-        if ('' !== $group_slug && isset($groups_available[$group_slug])) {
+        if ('' !== $groupSlug && isset($groupsAvailable[$groupSlug])) {
 
-            $group_id = $groups_available[$group_slug];
+            $groupId = $groupsAvailable[$groupSlug];
 
-            $query->join($groups_pvt_tbl, function ($join) use ($groups_pvt_tbl, $friends_pvt_tbl, $group_id, $model) {
-                $join->on($groups_pvt_tbl . '.friendship_id', '=', $friends_pvt_tbl . '.id')
-                    ->where($groups_pvt_tbl . '.group_id', '=', $group_id)
-                    ->where(function ($query) use ($groups_pvt_tbl, $friends_pvt_tbl, $model) {
-                        $query->where($groups_pvt_tbl . '.friend_id', '!=', $model->getKey())
-                            ->where($groups_pvt_tbl . '.friend_type', '=', $model->getMorphClass());
+            $query->join($groupsPivotTable, function ($join) use ($groupsPivotTable, $friendsPivotTable, $groupId, $model) {
+                $join->on($groupsPivotTable . '.friendship_id', '=', $friendsPivotTable . '.id')
+                    ->where($groupsPivotTable . '.group_id', '=', $groupId)
+                    ->where(function ($query) use ($groupsPivotTable, $friendsPivotTable, $model) {
+                        $query->where($groupsPivotTable . '.friend_id', '!=', $model->getKey())
+                            ->where($groupsPivotTable . '.friend_type', '=', $model->getMorphClass());
                     })
-                    ->orWhere($groups_pvt_tbl . '.friend_type', '!=', $model->getMorphClass());
+                    ->orWhere($groupsPivotTable . '.friend_type', '!=', $model->getMorphClass());
             });
 
         }
