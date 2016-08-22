@@ -67,7 +67,20 @@ class FriendshipsGroupsTest extends TestCase
         $this->assertCount(0, $recipient->getFriends(0, 'acquaintances'));
         $this->assertCount(1, $recipient->getFriends(0, 'family'));
     }
-    
+
+    /** @test */
+    public function user_cannot_remove_a_non_existing_friend_from_group()
+    {
+        $sender     = createUser();
+        $recipient  = createUser();
+        $recipient2 = createUser();
+
+        $sender->befriend($recipient);
+
+        $this->assertEquals(0, $recipient->ungroupFriend($sender, 'acquaintances'));
+        $this->assertEquals(0, $recipient2->ungroupFriend($sender, 'acquaintances'));
+    }
+
     /** @test */
     public function user_can_remove_a_friend_from_all_groups()
     {
