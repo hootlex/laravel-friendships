@@ -6,6 +6,10 @@ services:
 php:
   - 5.6
   - 7.0
+  
+addons:
+    code_climate:
+        repo_token: bb9681de04daca830a87c3eb0f6500b0a815f8262107fec833e0852df2401466
 
 sudo: false
 
