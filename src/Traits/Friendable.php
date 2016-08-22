@@ -51,7 +51,7 @@ trait Friendable
      *
      * @return bool
      */
-    public function hasFriendRequestFrom(Model $recipient)
+    public function hasPendingFriendRequest(Model $recipient)
     {
         return Friendship::whereRecipient($this)->whereSender($recipient)->whereStatus(Status::PENDING)->exists();
     }

@@ -87,15 +87,15 @@ class FriendshipsTest extends TestCase
     }
 
     /** @test */
-    public function user_is_sent_friend_request_to_this_user_if_he_already_sent_request()
+    public function user_has_pending_friend_request_to_this_user_if_he_already_sent_request()
     {
         $sender    = createUser();
         $recipient = createUser();
         //send fr
         $sender->befriend($recipient);
 
-        $this->assertFalse($recipient->isSentFriendRequest($sender));
-        $this->assertTrue($sender->isSentFriendRequest($recipient));
+        $this->assertFalse($recipient->hasPendingFriendRequest($sender));
+        $this->assertTrue($sender->hasPendingFriendRequest($recipient));
     }
     
     /** @test */

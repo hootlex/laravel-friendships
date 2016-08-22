@@ -90,9 +90,9 @@ $user->unblockFriend($recipient);
 $user->isFriendWith($recipient);
 ```
 
-#### Check if Model is already sent request to another Model
+#### Check if Model has pending a friend request with another Model
 ```php
-$user->isSentFriendRequest($recipient);
+$user->hasPendingFriendRequest($recipient);
 ```
 
 #### Check if Model has a pending friend request from another Model
