@@ -45,7 +45,30 @@ class FriendshipsTest extends TestCase
         
         $this->assertCount(1, $recipient->getFriendRequests());
     }
-    
+
+    /** @test */
+    public function user_can_remove_a_friend_request()
+    {
+        $sender    = createUser();
+        $recipient = createUser();
+
+        $sender->befriend($recipient);
+        $this->assertCount(1, $recipient->getFriendRequests());
+
+        $sender->unfriend($recipient);
+        $this->assertCount(0, $recipient->getFriendRequests());
+
+        // Can resend friend request after deleted
+        $sender->befriend($recipient);
+        $this->assertCount(1, $recipient->getFriendRequests());
+
+        $recipient->acceptFriendRequest($sender);
+        $this->assertEquals(true, $recipient->isFriendWith($sender));
+        // Can remove friend request after accepted
+        $sender->unfriend($recipient);
+        $this->assertEquals(false, $recipient->isFriendWith($sender));
+    }
+
     /** @test */
     public function user_is_friend_with_another_user_if_accepts_a_friend_request()
     {
