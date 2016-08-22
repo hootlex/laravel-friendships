@@ -288,11 +288,7 @@ trait Friendable
      */
     public function getFriends($perPage = 0, $group_slug = '')
     {
-        if ($perPage == 0) {
-            return $this->getFriendsQueryBuilder($group_slug)->get();
-        } else {
-            return $this->getFriendsQueryBuilder($group_slug)->paginate($perPage);
-        }
+        return $this->getOrPaginate($this->getFriendsQueryBuilder($group_slug), $perPage);
     }
     
     /**
@@ -305,11 +301,7 @@ trait Friendable
      */
     public function getMutualFriends(Model $other, $perPage = 0)
     {
-        if ($perPage == 0) {
-            return $this->getMutualFriendsQueryBuilder($other)->get();
-        } else {
-            return $this->getMutualFriendsQueryBuilder($other)->paginate($perPage);
-        }
+        return $this->getOrPaginate($this->getMutualFriendsQueryBuilder($other), $perPage);
     }
     
     /**
@@ -332,11 +324,7 @@ trait Friendable
      */
     public function getFriendsOfFriends($perPage = 0)
     {
-        if ($perPage == 0) {
-            return $this->friendsOfFriendsQueryBuilder()->get();
-        } else {
-            return $this->friendsOfFriendsQueryBuilder()->paginate($perPage);
-        }
+        return $this->getOrPaginate($this->friendsOfFriendsQueryBuilder(), $perPage);
     }
 
 
@@ -511,5 +499,12 @@ trait Friendable
     {
         return $this->morphMany(FriendFriendshipGroups::class, 'friend');
     }
-
+    
+    protected function getOrPaginate($builder, $perPage)
+    {
+        if ($perPage == 0) {
+            return $builder->get();
+        }
+        return $builder->paginate($perPage);
+    }
 }
