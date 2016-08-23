@@ -93,10 +93,10 @@ class FriendshipsTest extends TestCase
         $recipient = createUser();
         //send fr
         $sender->befriend($recipient);
+
         $this->assertFalse($recipient->hasSentFriendRequestTo($sender));
         $this->assertTrue($sender->hasSentFriendRequestTo($recipient));
     }
-
 
     /** @test */
     public function user_has_not_friend_request_from_another_user_if_he_accepted_the_friend_request()
