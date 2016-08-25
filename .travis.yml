@@ -20,7 +20,7 @@ cache:
     - $HOME/.composer/cache
 
 install:
-  - composer install --dev --prefer-source --no-interaction
+  - COMPOSER_DISCARD_CHANGES=1 composer install --dev --prefer-source --no-interaction
 
 before_script:
   - mysql -e 'create database friendships_test;'
