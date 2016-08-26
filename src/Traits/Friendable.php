@@ -411,8 +411,8 @@ trait Friendable
     {
 
         $friendships = $this->findFriendships(Status::ACCEPTED, $groupSlug)->get(['sender_id', 'recipient_id']);
-        $recipients  = $friendships->lists('recipient_id')->all();
-        $senders     = $friendships->lists('sender_id')->all();
+        $recipients  = $friendships->pluck('recipient_id')->all();
+        $senders     = $friendships->pluck('sender_id')->all();
 
         return $this->where('id', '!=', $this->getKey())->whereIn('id', array_merge($recipients, $senders));
     }
@@ -425,12 +425,12 @@ trait Friendable
     private function getMutualFriendsQueryBuilder(Model $other)
     {
         $user1['friendships'] = $this->findFriendships(Status::ACCEPTED)->get(['sender_id', 'recipient_id']);
-        $user1['recipients'] = $user1['friendships']->lists('recipient_id')->all();
-        $user1['senders'] = $user1['friendships']->lists('sender_id')->all();
+        $user1['recipients'] = $user1['friendships']->pluck('recipient_id')->all();
+        $user1['senders'] = $user1['friendships']->pluck('sender_id')->all();
         
         $user2['friendships'] = $other->findFriendships(Status::ACCEPTED)->get(['sender_id', 'recipient_id']);
-        $user2['recipients'] = $user2['friendships']->lists('recipient_id')->all();
-        $user2['senders'] = $user2['friendships']->lists('sender_id')->all();
+        $user2['recipients'] = $user2['friendships']->pluck('recipient_id')->all();
+        $user2['senders'] = $user2['friendships']->pluck('sender_id')->all();
         
         $mutualFriendships = array_unique(
                                     array_intersect(
@@ -452,8 +452,8 @@ trait Friendable
     private function friendsOfFriendsQueryBuilder($groupSlug = '')
     {
         $friendships = $this->findFriendships(Status::ACCEPTED)->get(['sender_id', 'recipient_id']);
-        $recipients = $friendships->lists('recipient_id')->all();
-        $senders = $friendships->lists('sender_id')->all();
+        $recipients = $friendships->pluck('recipient_id')->all();
+        $senders = $friendships->pluck('sender_id')->all();
 
         $friendIds = array_unique(array_merge($recipients, $senders));
 
@@ -470,7 +470,7 @@ trait Friendable
                             ->get(['sender_id', 'recipient_id']);
 
         $fofIds = array_unique(
-            array_merge($fofs->pluck('sender_id')->all(), $fofs->lists('recipient_id')->all())
+            array_merge($fofs->pluck('sender_id')->all(), $fofs->pluck('recipient_id')->all())
         );
 
 //      Alternative way using collection helpers

@@ -20,7 +20,7 @@ cache:
     - $HOME/.composer/cache
 
 install:
-  - composer install --dev --prefer-source --no-interaction
+  - COMPOSER_DISCARD_CHANGES=1 composer install --dev --prefer-source --no-interaction
 
 before_script:
   - mysql -e 'create database friendships_test;'
@@ -29,7 +29,7 @@ before_script:
   - yes | cp tests/config/friendships.php vendor/laravel/laravel/config/friendships.php
   - yes | cp tests/Stub_User.php vendor/laravel/laravel/app/User.php
   - cd vendor/laravel/laravel
-  - composer install --dev --prefer-source --no-interaction
+  - composer update --dev --prefer-source --no-interaction
   - php artisan migrate
   - cd -
 
