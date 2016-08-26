@@ -101,6 +101,11 @@ $user->hasPendingFriendRequest($recipient);
 $user->hasFriendRequestFrom($recipient);
 ```
 
+#### Check if Model has already sent a friend request to another Model
+```php
+$user->hasSentFriendRequestTo($recipient);
+```
+
 #### Check if Model has blocked another Model
 ```php
 $user->hasBlocked($recipient);
