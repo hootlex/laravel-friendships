@@ -229,5 +229,17 @@ $user->getPendingFriendships($group_name);
 ...
 ```
 
+## Events
+This is the list of the events fired by default for each action
+
+|Event name            |Fired                            |
+|----------------------|---------------------------------|
+|friendships.sent      |When a friend request is sent    |
+|friendships.accepted  |When a friend request is accepted|
+|friendships.denied    |When a friend request is denied  |
+|friendships.blocked   |When a friend is blocked         |
+|friendships.unblocked |When a friend is unblocked       |
+|friendships.cancelled |When a friendship is cancelled   |
+
 ## Contributing
 See the [CONTRIBUTING](CONTRIBUTING.md) guide.
