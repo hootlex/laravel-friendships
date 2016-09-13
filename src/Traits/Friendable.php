@@ -6,6 +6,7 @@ use Hootlex\Friendships\Models\Friendship;
 use Hootlex\Friendships\Models\FriendFriendshipGroups;
 use Hootlex\Friendships\Status;
 use Illuminate\Database\Eloquent\Model;
+use Event;
 
 /**
  * Class Friendable
@@ -30,6 +31,8 @@ trait Friendable
         ]);
 
         $this->friends()->save($friendship);
+      
+        Event::fire('friendships.sent', [$this, $recipient]);
 
         return $friendship;
 
@@ -42,6 +45,7 @@ trait Friendable
      */
     public function unfriend(Model $recipient)
     {
+        Event::fire('friendships.cancelled', [$this, $recipient]);
 
         return $this->findFriendship($recipient)->delete();
     }
@@ -83,6 +87,8 @@ trait Friendable
      */
     public function acceptFriendRequest(Model $recipient)
     {
+        Event::fire('friendships.accepted', [$this, $recipient]);
+      
         return $this->findFriendship($recipient)->whereRecipient($this)->update([
             'status' => Status::ACCEPTED,
         ]);
@@ -95,6 +101,8 @@ trait Friendable
      */
     public function denyFriendRequest(Model $recipient)
     {
+        Event::fire('friendships.denied', [$this, $recipient]);
+      
         return $this->findFriendship($recipient)->whereRecipient($this)->update([
             'status' => Status::DENIED,
         ]);
@@ -174,6 +182,8 @@ trait Friendable
         $friendship = (new Friendship)->fillRecipient($recipient)->fill([
             'status' => Status::BLOCKED,
         ]);
+      
+        Event::fire('friendships.blocked', [$this, $recipient]);
 
         return $this->friends()->save($friendship);
     }
@@ -185,6 +195,8 @@ trait Friendable
      */
     public function unblockFriend(Model $recipient)
     {
+        Event::fire('friendships.unblocked', [$this, $recipient]);
+      
         return $this->findFriendship($recipient)->whereSender($this)->delete();
     }
 
