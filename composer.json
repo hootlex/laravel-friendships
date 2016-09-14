@@ -1,7 +1,7 @@
 {
     "name": "hootlex/laravel-friendships",
     "description": "This package gives Eloquent models the ability to manage their friendships.",
-    "keywords": ["laravel", "friendships", "friend-system", "friends", "eloqent"],
+    "keywords": ["laravel", "friendships", "friend-system", "friends", "eloquent"],
     "license": "MIT",
     "authors": [
         {
@@ -24,7 +24,9 @@
         "phpunit/phpunit" : "5.*",
         "fzaninotto/faker": "~1.4",
         "laravel/laravel": "5.*",
-        "codeclimate/php-test-reporter": "^0.3.2"
+        "codeclimate/php-test-reporter": "^0.3.2",
+        "mockery/mockery": "^0.9.5",
+        "doctrine/dbal": "^2.5"
     },
     "autoload": {
         "psr-4": {
