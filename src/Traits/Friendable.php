@@ -306,7 +306,7 @@ trait Friendable
      */
     public function getFriendRequests()
     {
-        @trigger_error(sprintf('The ' . __METHOD__ . ' method was deprecated in version 1.1 and will be removed in version 2.0. You should use  instead.'), E_USER_DEPRECATED);
+        @trigger_error(sprintf('The ' . __METHOD__ . ' method was deprecated in version 1.1 and will be removed in version 2.0.'), E_USER_DEPRECATED);
         return Friendship::whereRecipient($this)->whereStatus(Status::PENDING)->get();
     }
 
