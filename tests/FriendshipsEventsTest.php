@@ -1,10 +1,13 @@
 <?php
 
+require_once 'Test.php';
+
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Test as BaseTest;
 
-class FriendshipsEventsTest extends TestCase
+class FriendshipsEventsTest extends BaseTest
 {
     // use DatabaseTransactions;
     
