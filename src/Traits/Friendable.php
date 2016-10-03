@@ -300,13 +300,13 @@ trait Friendable
     }
 
     /**
-     * @deprecated Will be removed in version 2
+     * @deprecated Will be removed in version 2.
      *
      * @return \Illuminate\Database\Eloquent\Collection
      */
     public function getFriendRequests()
     {
-        @trigger_error(sprintf('The ' . __METHOD__ . ' method was deprecated in version 1.1 and will be removed in version 2.0. You should implement this method yourself in %s.', get_class($this)), E_USER_DEPRECATED);
+        @trigger_error(sprintf('The ' . __METHOD__ . ' method was deprecated in version 1.1 and will be removed in version 2.0. You should use  instead.'), E_USER_DEPRECATED);
         return Friendship::whereRecipient($this)->whereStatus(Status::PENDING)->get();
     }
 
@@ -331,28 +331,22 @@ trait Friendable
      * This method will not return Friendship models
      * It will return the 'friends' models. ex: App\User
      *
-     * @deprecated Will be removed in version 2
-     *
      * @param int $perPage Number
      *
      * @return \Illuminate\Database\Eloquent\Collection
      */
     public function getMutualFriends(Model $other, $perPage = 0)
     {
-        @trigger_error(sprintf('The ' . __METHOD__ . ' method was deprecated in version 1.1 and will be removed in version 2.0. You should implement this method yourself in %s.', get_class($this)), E_USER_DEPRECATED);
         return $this->getOrPaginate($this->getMutualFriendsQueryBuilder($other), $perPage);
     }
 
     /**
      * Get the number of friends
      *
-     * @deprecated Will be removed in version 2
-     *
      * @return integer
      */
     public function getMutualFriendsCount($other)
     {
-        @trigger_error(sprintf('The ' . __METHOD__ . ' method was deprecated in version 1.1 and will be removed in version 2.0. You should implement this method yourself in %s.', get_class($this)), E_USER_DEPRECATED);
         return $this->getMutualFriendsQueryBuilder($other)->count();
     }
 
@@ -360,15 +354,12 @@ trait Friendable
      * This method will not return Friendship models
      * It will return the 'friends' models. ex: App\User
      *
-     * @deprecated Will be removed in version 2
-     *
      * @param int $perPage Number
      *
      * @return \Illuminate\Database\Eloquent\Collection
      */
     public function getFriendsOfFriends($perPage = 0)
     {
-        @trigger_error(sprintf('The ' . __METHOD__ . ' method was deprecated in version 1.1 and will be removed in version 2.0. You should implement this method yourself in %s.', get_class($this)), E_USER_DEPRECATED);
         return $this->getOrPaginate($this->friendsOfFriendsQueryBuilder(), $perPage);
 
     }
@@ -378,13 +369,11 @@ trait Friendable
      * Get the number of friends
      *
      * @param string $groupSlug
-     * @deprecated Will be removed in version 2
      *
      * @return integer
      */
     public function getFriendsCount($groupSlug = '')
     {
-        @trigger_error(sprintf('The ' . __METHOD__ . ' method was deprecated in version 1.1 and will be removed in version 2.0. You should implement this method yourself in %s.', get_class($this)), E_USER_DEPRECATED);
         $friendsCount = $this->findFriendships(Status::ACCEPTED, $groupSlug)->count();
         return $friendsCount;
     }
