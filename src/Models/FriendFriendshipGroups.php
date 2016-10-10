@@ -2,7 +2,6 @@
 
 namespace Hootlex\Friendships\Models;
 
-use Hootlex\Friendships\Status;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -15,7 +14,7 @@ class FriendFriendshipGroups extends Model
     /**
      * @var array
      */
-    protected $fillable = ['friendship_id', 'group_id', 'friend_id', 'friend_type'];
+    protected $fillable = ['friendship_id', 'group_slug', 'friend_id', 'friend_type'];
 
     /**
      * @var bool

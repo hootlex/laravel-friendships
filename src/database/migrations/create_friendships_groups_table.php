@@ -15,14 +15,14 @@ class CreateFriendshipsGroupsTable extends Migration
 
             $table->integer('friendship_id')->unsigned();
             $table->morphs('friend');
-            $table->integer('group_id')->unsigned();
+            $table->string('group_slug');
 
             $table->foreign('friendship_id')
                 ->references('id')
                 ->on(config('friendships.tables.fr_pivot'))
                 ->onDelete('cascade');
 
-            $table->unique(['friendship_id', 'friend_id', 'friend_type', 'group_id'], 'unique');
+            $table->unique(['friendship_id', 'friend_id', 'friend_type', 'group_slug'], 'unique');
 
         });
 

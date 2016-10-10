@@ -246,7 +246,6 @@ class FriendshipsGroupsTest extends TestCase
 
         $sender           = createUser();
         $recipients       = createUser([], 2);
-        $groupsAvailable  = config('friendships.groups', []);
 
         foreach ($recipients as $recipient) {
             $sender->befriend($recipient);
@@ -267,7 +266,6 @@ class FriendshipsGroupsTest extends TestCase
         $this->assertCount(0, $recipients[1]->getGroupsFor($sender));
 
         $this->assertInternalType('array', $rec1);
-        $this->assertContains($rec1[0], $groupsAvailable);
 
     }
 

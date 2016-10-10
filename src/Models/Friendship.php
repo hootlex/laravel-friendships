@@ -2,7 +2,6 @@
 
 namespace Hootlex\Friendships\Models;
 
-use Hootlex\Friendships\Status;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -87,23 +86,21 @@ class Friendship extends Model
     /**
      * @param $query
      * @param Model $model
-     * @param string $groupSlug
+     * @param string $group
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeWhereGroup($query, $model, $groupSlug)
+    public function scopeWhereGroup($query, $model, $group)
     {
 
         $groupsPivotTable   = config('friendships.tables.fr_groups_pivot');
         $friendsPivotTable  = config('friendships.tables.fr_pivot');
         $groupsAvailable = config('friendships.groups', []);
 
-        if ('' !== $groupSlug && isset($groupsAvailable[$groupSlug])) {
+        if ('' !== $group && isset($groupsAvailable[$group])) {
 
-            $groupId = $groupsAvailable[$groupSlug];
-
-            $query->join($groupsPivotTable, function ($join) use ($groupsPivotTable, $friendsPivotTable, $groupId, $model) {
+            $query->join($groupsPivotTable, function ($join) use ($groupsPivotTable, $friendsPivotTable, $group, $model) {
                 $join->on($groupsPivotTable . '.friendship_id', '=', $friendsPivotTable . '.id')
-                    ->where($groupsPivotTable . '.group_id', '=', $groupId)
+                    ->where($groupsPivotTable . '.group_slug', '=', $group)
                     ->where(function ($query) use ($groupsPivotTable, $friendsPivotTable, $model) {
                         $query->where($groupsPivotTable . '.friend_id', '!=', $model->getKey())
                             ->where($groupsPivotTable . '.friend_type', '=', $model->getMorphClass());
