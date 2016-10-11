@@ -241,5 +241,35 @@ class FriendshipsGroupsTest extends TestCase
         $this->containsOnlyInstancesOf(\App\User::class, $sender->getFriends(0, 'acquaintances'));
     }
 
+    /** @test */
+    public function returns_groups_for_specific_friend() {
+
+        $sender           = createUser();
+        $recipients       = createUser([], 2);
+        $groupsAvailable  = config('friendships.groups', []);
+
+        foreach ($recipients as $recipient) {
+            $sender->befriend($recipient);
+            $recipient->acceptFriendRequest($sender);
+        }
+
+        $sender->groupFriend($recipients[0], 'acquaintances');
+        $sender->groupFriend($recipients[0], 'close_friends');
+
+        $sender->groupFriend($recipients[1], 'family');
+
+        $recipients[0]->groupFriend($sender, 'close_friends');
+
+        $rec1 = $sender->getGroupsFor($recipients[1]);
+
+        $this->assertCount(2, $sender->getGroupsFor($recipients[0]));
+        $this->assertCount(1, $recipients[0]->getGroupsFor($sender));
+        $this->assertCount(0, $recipients[1]->getGroupsFor($sender));
+
+        $this->assertInternalType('array', $rec1);
+        $this->assertContains($rec1[0], $groupsAvailable);
+
+    }
+
     
 }

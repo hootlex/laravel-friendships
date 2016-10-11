@@ -353,6 +353,30 @@ trait Friendable
         return $friendsCount;
     }
 
+
+    /**
+     * Get groups for Friend
+     *
+     * @param Model $model
+     * @return array
+     */
+    public function getGroupsFor(Model $model) {
+
+        $result = [];
+        $friendship = $this->getFriendship($model);
+        if(!empty($friendship)) {
+            $groups = $friendship->groups()
+                ->where('friend_id', $model->getKey())
+                ->where('friend_type', $model->getMorphClass())
+                ->get();
+            if(false === $groups->isEmpty())
+                $result = $groups->pluck('group_slug')->all();
+        }
+
+        return $result;
+
+    }
+
     /**
      * @param Model $recipient
      *
