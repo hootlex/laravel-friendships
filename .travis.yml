@@ -24,9 +24,9 @@ install:
 
 before_script:
   - mysql -e 'create database friendships_test;'
-  - cp src/database/migrations/create_friendships_table.php vendor/laravel/laravel/database/migrations/2015_10_10_000000_create_friendships_table.php
-  - yes | cp src/database/migrations/create_friendship_groups_table.php vendor/laravel/laravel/database/migrations/2015_10_10_000100_create_friendship_groups_table.php
-  - yes | cp src/database/migrations/create_friendship_grouped_table.php vendor/laravel/laravel/database/migrations/2015_10_10_000200_create_friendship_grouped_table.php
+  - cp src/database/migrations/create_friendships_table.php vendor/laravel/laravel/database/migrations/2015_11_19_053825_create_friendships_table.php
+  - yes | cp src/database/migrations/create_friendship_groups_table.php vendor/laravel/laravel/database/migrations/2015_11_19_053826_create_friendship_groups_table.php
+  - yes | cp src/database/migrations/create_friendship_grouped_table.php vendor/laravel/laravel/database/migrations/2015_11_19_053827_create_friendship_grouped_table.php
   - yes | cp src/database/seeds/FriendshipGroupsSeeder.php vendor/laravel/laravel/database/seeds/FriendshipGroupsSeeder.php
   - yes | cp tests/config/friendships.php vendor/laravel/laravel/config/friendships.php
   - yes | cp tests/Stub_User.php vendor/laravel/laravel/app/User.php
