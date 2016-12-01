@@ -3,7 +3,8 @@
 namespace Hootlex\Friendships\Traits;
 
 use Hootlex\Friendships\Models\Friendship;
-use Hootlex\Friendships\Models\FriendFriendshipGroups;
+use Hootlex\Friendships\Models\FriendshipGrouped;
+use Hootlex\Friendships\Models\FriendshipGroup;
 use Hootlex\Friendships\Status;
 use Illuminate\Database\Eloquent\Model;
 use Event;
@@ -111,40 +112,37 @@ trait Friendable
 
     /**
      * @param Model $friend
-     * @param string $group
+     * @param string $groupSlug
      * @return bool
      */
-    public function groupFriend(Model $friend, $group)
+    public function groupFriend(Model $friend, $groupSlug)
     {
 
-        $friendship       = $this->findFriendship($friend)->whereStatus(Status::ACCEPTED)->first();
-        $groupsAvailable  = config('friendships.groups', []);
+        $friendship = $this->findFriendship($friend)->whereStatus(Status::ACCEPTED)->first();
+        $group      = FriendshipGroup::where('slug', $groupSlug)->first();
 
-        if (!isset($groupsAvailable[$group]) || empty($friendship)) {
-            return false;
-        }
+        if (empty($group)) return false;
 
-        $group = $friendship->groups()->firstOrCreate([
+        $grouped = $friendship->grouped()->firstOrCreate([
             'friendship_id' => $friendship->id,
-            'group_slug'         => $group,
+            'group_id'      => $group->id,
             'friend_id'     => $friend->getKey(),
             'friend_type'   => $friend->getMorphClass(),
         ]);
 
-        return $group->wasRecentlyCreated;
+        return $grouped->wasRecentlyCreated;
 
     }
 
     /**
      * @param Model $friend
-     * @param string $group
+     * @param string $groupSlug
      * @return bool
      */
-    public function ungroupFriend(Model $friend, $group="")
+    public function ungroupFriend(Model $friend, $groupSlug="")
     {
 
         $friendship       = $this->findFriendship($friend)->first();
-        $groupsAvailable = config('friendships.groups', []);
 
         if (empty($friendship)) {
                     return false;
@@ -156,8 +154,9 @@ trait Friendable
             'friend_type'   => $friend->getMorphClass(),
         ];
 
-        if ('' !== $group && isset($groupsAvailable[$group])) {
-            $where['group_slug'] = $group;
+        if (!empty($groupSlug)) {
+            $group = FriendshipGroup::where('slug', $groupSlug)->first();
+            if (!empty($group)) $where['group_id'] = $group->id;
         }
 
         $result = $friendship->groups()->where($where)->delete();
@@ -362,15 +361,24 @@ trait Friendable
      */
     public function getGroupsFor(Model $model) {
 
-        $result = [];
+        $result     = [];
         $friendship = $this->getFriendship($model);
-        if(!empty($friendship)) {
-            $groups = $friendship->groups()
+
+        if( !empty($friendship) ) {
+
+            $grouped = $friendship->grouped()
+                ->with('group')
                 ->where('friend_id', $model->getKey())
                 ->where('friend_type', $model->getMorphClass())
                 ->get();
-            if(false === $groups->isEmpty())
-                $result = $groups->pluck('group_slug')->all();
+
+            if( false === $grouped->isEmpty() ) {
+
+                foreach ($grouped as $item)
+                    $result[] = $item->group->slug;
+
+            }
+
         }
 
         return $result;
@@ -531,9 +539,9 @@ trait Friendable
     /**
      * @return \Illuminate\Database\Eloquent\Relations\MorphMany
      */
-    public function groups()
+    public function grouped()
     {
-        return $this->morphMany(FriendFriendshipGroups::class, 'friend');
+        return $this->morphMany(FriendshipGrouped::class, 'friend');
     }
 
     /**
