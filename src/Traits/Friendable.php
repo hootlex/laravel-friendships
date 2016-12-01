@@ -159,7 +159,7 @@ trait Friendable
             if (!empty($group)) $where['group_id'] = $group->id;
         }
 
-        $result = $friendship->groups()->where($where)->delete();
+        $result = $friendship->grouped()->where($where)->delete();
 
         return $result;
 
