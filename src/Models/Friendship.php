@@ -97,14 +97,18 @@ class Friendship extends Model
         $friendsPivotTable   = config('friendships.tables.fr_pivot');
 
 
-        $query->join($groupUserPivotTable, $groupUserPivotTable . '.friendship_id', '=', $friendsPivotTable . '.id')
-            ->join($groupsTable, $groupsTable . '.id', '=', $groupUserPivotTable . '.group_id')
-            ->where($groupsTable . '.slug', '=', $group)
-            ->where(function ($query) use ($groupUserPivotTable, $friendsPivotTable, $model) {
-                $query->where($groupUserPivotTable . '.friend_id', '!=', $model->getKey())
-                    ->where($groupUserPivotTable . '.friend_type', '=', $model->getMorphClass());
-            })
-            ->orWhere($groupUserPivotTable . '.friend_type', '!=', $model->getMorphClass());
+        if (!empty($group)) {
+
+            $query->join($groupUserPivotTable, $groupUserPivotTable . '.friendship_id', '=', $friendsPivotTable . '.id')
+                ->join($groupsTable, $groupsTable . '.id', '=', $groupUserPivotTable . '.group_id')
+                ->where($groupsTable . '.slug', '=', $group)
+                ->where(function ($query) use ($groupUserPivotTable, $friendsPivotTable, $model) {
+                    $query->where($groupUserPivotTable . '.friend_id', '!=', $model->getKey())
+                        ->where($groupUserPivotTable . '.friend_type', '=', $model->getMorphClass());
+                })
+                ->orWhere($groupUserPivotTable . '.friend_type', '!=', $model->getMorphClass());
+            
+        }
 
         return $query;
 
