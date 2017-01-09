@@ -64,38 +64,38 @@ $user->befriend($recipient);
 
 #### Accept a Friend Request
 ```php
-$user->acceptFriendRequest($recipient);
+$user->acceptFriendRequest($sender);
 ```
 
 #### Deny a Friend Request
 ```php
-$user->denyFriendRequest($recipient);
+$user->denyFriendRequest($sender);
 ```
 
 #### Remove Friend
 ```php
-$user->unfriend($recipient);
+$user->unfriend($friend);
 ```
 
 #### Block a Model
 ```php
-$user->blockFriend($recipient);
+$user->blockFriend($friend);
 ```
 
 #### Unblock a Model
 ```php
-$user->unblockFriend($recipient);
+$user->unblockFriend($friend);
 ```
 
 #### Check if Model is Friend with another Model
 ```php
-$user->isFriendWith($recipient);
+$user->isFriendWith($friend);
 ```
 
 
 #### Check if Model has a pending friend request from another Model
 ```php
-$user->hasFriendRequestFrom($recipient);
+$user->hasFriendRequestFrom($sender);
 ```
 
 #### Check if Model has already sent a friend request to another Model
@@ -105,17 +105,17 @@ $user->hasSentFriendRequestTo($recipient);
 
 #### Check if Model has blocked another Model
 ```php
-$user->hasBlocked($recipient);
+$user->hasBlocked($friend);
 ```
 
 #### Check if Model is blocked by another Model
 ```php
-$user->isBlockedBy($recipient);
+$user->isBlockedBy($friend);
 ```
 
 #### Get a single friendship
 ```php
-$user->getFriendship($recipient);
+$user->getFriendship($friend);
 ```
 
 #### Get a list of all Friendships
