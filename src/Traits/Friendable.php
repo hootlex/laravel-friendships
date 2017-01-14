@@ -354,6 +354,20 @@ trait Friendable
     }
 
     /**
+     * Get the number of friends pendings
+     *
+     * @param string $groupSlug
+     *
+     * @return integer
+     */    
+    public function getpendingsCount($groupSlug = '')
+    {
+        $friendsCount = $this->findFriendships(Status::PENDING, $groupSlug)->count();
+        return $friendsCount;
+    }    
+    
+
+    /**
      * @param Model $recipient
      *
      * @return bool
