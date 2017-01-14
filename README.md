@@ -152,6 +152,10 @@ $user->getFriendRequests();
 ```php
 $user->getFriendsCount();
 ```
+#### Get the number of Pendings
+```php
+$user->getPendingsCount();
+```
 
 #### Get the number of mutual Friends with another user
 ```php
