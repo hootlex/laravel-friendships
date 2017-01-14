@@ -356,13 +356,11 @@ trait Friendable
     /**
      * Get the number of friends pendings
      *
-     * @param string $groupSlug
-     *
      * @return integer
      */    
-    public function getpendingsCount($groupSlug = '')
+    public function getpendingsCount()
     {
-        $friendsCount = $this->findFriendships(Status::PENDING, $groupSlug)->count();
+        $friendsCount = $this->findFriendships(Status::PENDING)->count();
         return $friendsCount;
     }    
     
