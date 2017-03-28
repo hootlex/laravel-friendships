@@ -23,6 +23,10 @@ install:
   - COMPOSER_DISCARD_CHANGES=1 composer install --dev --prefer-source --no-interaction
 
 before_script:
+  - mysql -u root -e 'set global innodb_large_prefix=1;'
+  - mysql -u root -e 'set global innodb_file_format="Barracuda";'
+  - mysql -u root -e 'set global innodb_file_format_max="Barracuda";'
+  - mysql -u root -e 'set global innodb_file_per_table=true;'
   - mysql -e 'create database friendships_test;'
   - cp src/database/migrations/create_friendships_table.php vendor/laravel/laravel/database/migrations/2015_11_19_053825_create_friendships_table.php
   - yes | cp src/database/migrations/create_friendships_groups_table.php vendor/laravel/laravel/database/migrations/2015_11_19_053826_create_friendships_groups_table.php
@@ -30,6 +34,7 @@ before_script:
   - yes | cp tests/Stub_User.php vendor/laravel/laravel/app/User.php
   - cd vendor/laravel/laravel
   - composer update --dev --prefer-source --no-interaction
+  - perl -pi -w -e "s/'engine' => null,/'engine' => 'InnoDB ROW_FORMAT=DYNAMIC',/g;" config/database.php
   - php artisan migrate
   - cd -
 

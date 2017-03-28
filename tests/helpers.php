@@ -5,8 +5,12 @@
  * @param array $overrides
  * @param int   $amount
  *
- * @return \App\User
+ * @return \Illuminate\Database\Eloquent\Collection|\App\User[]|\App\User
  */
 function createUser($overrides = [], $amount = 1){
-    return factory(\App\User::class, $amount)->create($overrides);
+    $users = factory(\App\User::class, $amount)->create($overrides);
+    if (count($users) == 1) {
+        return $users->first();
+    }
+    return $users;
 }
