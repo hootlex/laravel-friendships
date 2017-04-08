@@ -211,7 +211,7 @@ trait Friendable
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Collection
+     * @return \Illuminate\Database\Eloquent\Collection|Friendship[]
      *
      * @param string $groupSlug
      *
@@ -222,7 +222,7 @@ trait Friendable
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Collection
+     * @return \Illuminate\Database\Eloquent\Collection|Friendship[]
      *
      * @param string $groupSlug
      *
@@ -233,7 +233,7 @@ trait Friendable
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Collection
+     * @return \Illuminate\Database\Eloquent\Collection|Friendship[]
      *
      * @param string $groupSlug
      *
@@ -244,7 +244,7 @@ trait Friendable
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Collection
+     * @return \Illuminate\Database\Eloquent\Collection|Friendship[]
      *
      */
     public function getDeniedFriendships()
@@ -253,7 +253,7 @@ trait Friendable
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Collection
+     * @return \Illuminate\Database\Eloquent\Collection|Friendship[]
      *
      */
     public function getBlockedFriendships()
@@ -282,7 +282,7 @@ trait Friendable
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Collection
+     * @return \Illuminate\Database\Eloquent\Collection|Friendship[]
      */
     public function getFriendRequests()
     {
