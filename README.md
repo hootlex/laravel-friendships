@@ -6,7 +6,7 @@
 This package gives Eloquent models the ability to manage their friendships.
 You can easily design a Facebook like Friend System.
 
-##Models can:
+## Models can:
 - Send Friend Requests
 - Accept Friend Requests
 - Deny Friend Requests
