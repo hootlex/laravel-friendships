@@ -6,7 +6,7 @@ use Hootlex\Friendships\Models\Friendship;
 use Hootlex\Friendships\Models\FriendFriendshipGroups;
 use Hootlex\Friendships\Status;
 use Illuminate\Database\Eloquent\Model;
-use Event;
+use Illuminate\Support\Facades\Event;
 
 /**
  * Class Friendable
