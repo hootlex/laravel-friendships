@@ -19,7 +19,7 @@ cache:
     - $HOME/.composer/cache
 
 install:
-  - COMPOSER_DISCARD_CHANGES=1 composer install --dev --prefer-source --no-interaction
+  - COMPOSER_DISCARD_CHANGES=1 composer install --prefer-source --no-interaction
 
 before_script:
   - mysql -u root -e 'set global innodb_large_prefix=1;'
