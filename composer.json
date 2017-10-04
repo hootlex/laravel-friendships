@@ -9,14 +9,6 @@
             "email": "hootlex@icloud.com"
         }
     ],
-    "autoload-dev": {
-        "classmap": [
-            "vendor/laravel/laravel/tests/TestCase.php"
-        ],
-        "files": [
-            "tests/helpers.php"
-        ]
-    },
     "require": {
         "php": ">=5.4.0"
     },
