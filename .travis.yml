@@ -1,10 +1,7 @@
 language: php
 
-services:
-  - sqlite
-
 php:
-  - 7.0
+  - 7.1
 
 addons:
     code_climate:
