@@ -38,5 +38,12 @@
             "Tests\\": "tests/"
         }
     },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Hootlex\\Friendships\\FriendshipsServiceProvider"
+            ]
+        }
+    },
     "minimum-stability": "stable"
 }
