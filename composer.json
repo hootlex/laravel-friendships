@@ -15,7 +15,10 @@
         ],
         "files": [
             "tests/helpers.php"
-        ]
+        ],
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
     },
     "require": {
         "php": ">=5.4.0"
@@ -31,11 +34,6 @@
     "autoload": {
         "psr-4": {
             "Hootlex\\Friendships\\": "src/"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "Tests\\": "tests/"
         }
     },
     "minimum-stability": "stable"
