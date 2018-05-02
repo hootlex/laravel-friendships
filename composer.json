@@ -36,5 +36,12 @@
             "Hootlex\\Friendships\\": "src/"
         }
     },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Hootlex\\Friendships\\FriendshipsServiceProvider"
+            ]
+        }
+    },
     "minimum-stability": "stable"
 }
