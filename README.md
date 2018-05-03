@@ -21,17 +21,11 @@ First, install the package through Composer.
 composer require hootlex/laravel-friendships
 ```
 
-Then include the service provider inside `config/app.php`.
-
+If you are using Laravel < 5.5, you need to add Hootlex\Friendships\FriendshipsServiceProvider to your `config/app.php` providers array:
 ```php
-'providers' => [
-    ...
-    Hootlex\Friendships\FriendshipsServiceProvider::class,
-    ...
-];
+Hootlex\Friendships\FriendshipsServiceProvider::class,
 ```
 Publish config and migrations
-
 ```
 php artisan vendor:publish --provider="Hootlex\Friendships\FriendshipsServiceProvider"
 ```
