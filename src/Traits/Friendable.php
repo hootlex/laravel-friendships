@@ -45,9 +45,11 @@ trait Friendable
      */
     public function unfriend(Model $recipient)
     {
+        $deleted = $this->findFriendship($recipient)->delete();
+
         Event::fire('friendships.cancelled', [$this, $recipient]);
 
-        return $this->findFriendship($recipient)->delete();
+        return $deleted;
     }
 
     /**
@@ -87,11 +89,13 @@ trait Friendable
      */
     public function acceptFriendRequest(Model $recipient)
     {
-        Event::fire('friendships.accepted', [$this, $recipient]);
-      
-        return $this->findFriendship($recipient)->whereRecipient($this)->update([
+        $updated = $this->findFriendship($recipient)->whereRecipient($this)->update([
             'status' => Status::ACCEPTED,
         ]);
+
+        Event::fire('friendships.accepted', [$this, $recipient]);
+      
+        return $updated;
     }
 
     /**
@@ -101,11 +105,13 @@ trait Friendable
      */
     public function denyFriendRequest(Model $recipient)
     {
-        Event::fire('friendships.denied', [$this, $recipient]);
-      
-        return $this->findFriendship($recipient)->whereRecipient($this)->update([
+        $updated = $this->findFriendship($recipient)->whereRecipient($this)->update([
             'status' => Status::DENIED,
         ]);
+
+        Event::fire('friendships.denied', [$this, $recipient]);
+      
+        return $updated;
     }
 
 
@@ -183,9 +189,11 @@ trait Friendable
             'status' => Status::BLOCKED,
         ]);
       
+        $this->friends()->save($friendship);
+
         Event::fire('friendships.blocked', [$this, $recipient]);
 
-        return $this->friends()->save($friendship);
+        return $friendship;
     }
 
     /**
@@ -195,9 +203,11 @@ trait Friendable
      */
     public function unblockFriend(Model $recipient)
     {
+        $deleted = $this->findFriendship($recipient)->whereSender($this)->delete();
+
         Event::fire('friendships.unblocked', [$this, $recipient]);
       
-        return $this->findFriendship($recipient)->whereSender($this)->delete();
+        return $deleted;
     }
 
     /**
