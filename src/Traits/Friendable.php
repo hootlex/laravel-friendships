@@ -300,6 +300,24 @@ trait Friendable
     }
 
     /**
+     * @return \Illuminate\Database\Eloquent\Collection|Friendship[]
+     */
+    public function getPendingIncomingFriends()
+    {
+        return Friendship::whereRecipient($this)->whereStatus(Status::PENDING);
+    }
+
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Collection|Friendship[]
+     */
+    public function getPendingOutgoingFriends()
+    {
+        return Friendship::whereSender($this)->whereStatus(Status::PENDING);
+    }
+
+
+    /**
      * This method will not return Friendship models
      * It will return the 'friends' models. ex: App\User
      *
@@ -530,3 +548,4 @@ trait Friendable
         return $builder->paginate($perPage);
     }
 }
+    
