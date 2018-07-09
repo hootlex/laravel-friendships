@@ -517,6 +517,14 @@ trait Friendable
     /**
      * @return \Illuminate\Database\Eloquent\Relations\MorphMany
      */
+    public function friendshipsReceived()
+    {
+        return $this->morphMany(Friendship::class, 'recipient');
+    }
+    
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     */
     public function groups()
     {
         return $this->morphMany(FriendFriendshipGroups::class, 'friend');
