@@ -155,7 +155,7 @@ class FriendshipsGroupsTest extends TestCase
         $this->assertCount(3, $sender->getAllFriendships('acquaintances'));
         $this->assertCount(1, $sender->getAllFriendships('family'));
         $this->assertCount(0, $sender->getAllFriendships('close_friends'));
-        $this->assertCount(5, $sender->getAllFriendships('whatever'));
+        $this->assertCount(0, $sender->getAllFriendships('whatever'));
     }
 
 
