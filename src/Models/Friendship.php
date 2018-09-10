@@ -97,9 +97,9 @@ class Friendship extends Model
         $friendsPivotTable  = config('friendships.tables.fr_pivot');
         $groupsAvailable = config('friendships.groups', []);
 
-        if ('' !== $groupSlug && isset($groupsAvailable[$groupSlug])) {
+        if ('' !== $groupSlug) {
 
-            $groupId = $groupsAvailable[$groupSlug];
+            $groupId = isset($groupsAvailable[$groupSlug]) ? $groupsAvailable[$groupSlug] : -1;
 
             $query->join($groupsPivotTable, function ($join) use ($groupsPivotTable, $friendsPivotTable, $groupId, $model) {
                 $join->on($groupsPivotTable . '.friendship_id', '=', $friendsPivotTable . '.id')
