@@ -215,6 +215,11 @@ $user->ungroupFriend($friend, 'family');
 $user->ungroupFriend($friend);
 ```
 
+#### Get groups for specific friend
+```php
+$user->getGroupsFor($friend);
+```
+
 #### Get the number of Friends in specific group
 ```php
 $user->getFriendsCount($group_name);

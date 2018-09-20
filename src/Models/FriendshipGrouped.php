@@ -2,14 +2,13 @@
 
 namespace Hootlex\Friendships\Models;
 
-use Hootlex\Friendships\Status;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class FriendFriendshipGroups
+ * Class FriendshipGrouped
  * @package Hootlex\Friendships\Models
  */
-class FriendFriendshipGroups extends Model
+class FriendshipGrouped extends Model
 {
 
     /**
@@ -30,6 +29,24 @@ class FriendFriendshipGroups extends Model
         $this->table = config('friendships.tables.fr_groups_pivot');
 
         parent::__construct($attributes);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function group() {
+
+        return $this->belongsTo('Hootlex\Friendships\Models\FriendshipGroup', 'group_id');
+
+    }
+
+    /**
+     * @return mixed
+     */
+    public function friendship() {
+
+        return $this->belongsTo('Hootlex\Friendships\Models\Friendship', 'friendship_id');
+
     }
 
 }
