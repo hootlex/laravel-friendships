@@ -122,6 +122,11 @@ $user->getAllFriendships();
 $user->getPendingFriendships();
 ```
 
+#### Get a list of pending Requests
+```php
+$user->getPendingRequests();
+```
+
 #### Get a list of accepted Friendships
 ```php
 $user->getAcceptedFriendships();
