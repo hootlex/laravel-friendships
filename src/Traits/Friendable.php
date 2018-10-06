@@ -248,6 +248,17 @@ trait Friendable
      * @param string $groupSlug
      *
      */
+    public function getPendingRequests($groupSlug = '')
+    {
+        return $this->findPendingRequests(Status::PENDING, $groupSlug)->get();
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Collection|Friendship[]
+     *
+     * @param string $groupSlug
+     *
+     */
     public function getAcceptedFriendships($groupSlug = '')
     {
         return $this->findFriendships(Status::ACCEPTED, $groupSlug)->get();
@@ -411,6 +422,29 @@ trait Friendable
                 $q->whereSender($this);
             })->orWhere(function ($q) {
                 $q->whereRecipient($this);
+            });
+        })->whereGroup($this, $groupSlug);
+
+        //if $status is passed, add where clause
+        if (!is_null($status)) {
+            $query->where('status', $status);
+        }
+
+        return $query;
+    }
+
+    /**
+     * @param $status
+     * @param string $groupSlug
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    private function findPendingRequests($status = null, $groupSlug = '')
+    {
+
+        $query = Friendship::where(function ($query) {
+            $query->where(function ($q) {
+                $q->whereSender($this);
             });
         })->whereGroup($this, $groupSlug);
 
