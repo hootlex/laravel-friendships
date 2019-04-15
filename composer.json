@@ -24,6 +24,7 @@
         "php": ">=5.4.0"
     },
     "require-dev": {
+        "beyondcode/laravel-dump-server": "^1.2",
         "phpunit/phpunit" : "5.*",
         "fzaninotto/faker": "~1.4",
         "laravel/laravel": "5.*",
