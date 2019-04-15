@@ -25,6 +25,7 @@
     },
     "require-dev": {
         "beyondcode/laravel-dump-server": "^1.2",
+        "nunomaduro/collision": "3.*",
         "phpunit/phpunit" : "5.*",
         "fzaninotto/faker": "~1.4",
         "laravel/laravel": "5.*",
