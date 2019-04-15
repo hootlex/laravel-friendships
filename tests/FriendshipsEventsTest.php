@@ -20,7 +20,7 @@ class FriendshipsEventsTest extends TestCase
         $this->recipient = createUser();
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         Mockery::close();
     }
