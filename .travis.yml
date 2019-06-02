@@ -35,7 +35,7 @@ before_script:
   - cd vendor/laravel/laravel
   - composer update --dev --prefer-source --no-interaction
   - perl -pi -w -e "s/'engine' => null,/'engine' => 'InnoDB ROW_FORMAT=DYNAMIC',/g;" config/database.php
-  - php artisan migrate
+  - php artisan migrate --force
   - cd -
 
 script:
