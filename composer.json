@@ -1,5 +1,5 @@
 {
-    "name": "hootlex/laravel-friendships",
+    "name": "ohkannaduh/laravel-friendships",
     "description": "This package gives Eloquent models the ability to manage their friendships.",
     "keywords": ["laravel", "friendships", "friend-system", "friends", "eloquent"],
     "license": "MIT",
@@ -7,6 +7,9 @@
         {
             "name": "Hootlex",
             "email": "hootlex@icloud.com"
+        },
+        {
+            "name": "OhKannaDuh"
         }
     ],
     "autoload-dev": {
