@@ -28,7 +28,7 @@
         "nunomaduro/collision": "3.*",
         "phpunit/phpunit" : "5.*",
         "fzaninotto/faker": "~1.4",
-        "laravel/laravel": "~5.6",
+        "laravel/laravel": "~5.6 | ^6.0",
         "codeclimate/php-test-reporter": "^0.3.2",
         "mockery/mockery": "^0.9.5",
         "doctrine/dbal": "^2.5"
