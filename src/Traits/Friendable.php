@@ -31,8 +31,8 @@ trait Friendable
         ]);
 
         $this->friends()->save($friendship);
-      
-        Event::fire('friendships.sent', [$this, $recipient]);
+
+        Event::dispatch('friendships.sent', [$this, $recipient]);
 
         return $friendship;
 
@@ -47,7 +47,7 @@ trait Friendable
     {
         $deleted = $this->findFriendship($recipient)->delete();
 
-        Event::fire('friendships.cancelled', [$this, $recipient]);
+        Event::dispatch('friendships.cancelled', [$this, $recipient]);
 
         return $deleted;
     }
@@ -93,8 +93,8 @@ trait Friendable
             'status' => Status::ACCEPTED,
         ]);
 
-        Event::fire('friendships.accepted', [$this, $recipient]);
-      
+        Event::dispatch('friendships.accepted', [$this, $recipient]);
+
         return $updated;
     }
 
@@ -109,8 +109,8 @@ trait Friendable
             'status' => Status::DENIED,
         ]);
 
-        Event::fire('friendships.denied', [$this, $recipient]);
-      
+        Event::dispatch('friendships.denied', [$this, $recipient]);
+
         return $updated;
     }
 
@@ -188,10 +188,10 @@ trait Friendable
         $friendship = (new Friendship)->fillRecipient($recipient)->fill([
             'status' => Status::BLOCKED,
         ]);
-      
+
         $this->friends()->save($friendship);
 
-        Event::fire('friendships.blocked', [$this, $recipient]);
+        Event::dispatch('friendships.blocked', [$this, $recipient]);
 
         return $friendship;
     }
@@ -205,8 +205,8 @@ trait Friendable
     {
         $deleted = $this->findFriendship($recipient)->whereSender($this)->delete();
 
-        Event::fire('friendships.unblocked', [$this, $recipient]);
-      
+        Event::dispatch('friendships.unblocked', [$this, $recipient]);
+
         return $deleted;
     }
 
@@ -312,7 +312,7 @@ trait Friendable
     {
         return $this->getOrPaginate($this->getFriendsQueryBuilder($groupSlug), $perPage);
     }
-    
+
     /**
      * This method will not return Friendship models
      * It will return the 'friends' models. ex: App\User
@@ -325,7 +325,7 @@ trait Friendable
     {
         return $this->getOrPaginate($this->getMutualFriendsQueryBuilder($other), $perPage);
     }
-    
+
     /**
      * Get the number of friends
      *
@@ -438,7 +438,7 @@ trait Friendable
 
         return $this->where('id', '!=', $this->getKey())->whereIn('id', array_merge($recipients, $senders));
     }
-    
+
     /**
      * Get the query builder of the 'friend' model
      *
@@ -449,11 +449,11 @@ trait Friendable
         $user1['friendships'] = $this->findFriendships(Status::ACCEPTED)->get(['sender_id', 'recipient_id']);
         $user1['recipients'] = $user1['friendships']->pluck('recipient_id')->all();
         $user1['senders'] = $user1['friendships']->pluck('sender_id')->all();
-        
+
         $user2['friendships'] = $other->findFriendships(Status::ACCEPTED)->get(['sender_id', 'recipient_id']);
         $user2['recipients'] = $user2['friendships']->pluck('recipient_id')->all();
         $user2['senders'] = $user2['friendships']->pluck('sender_id')->all();
-        
+
         $mutualFriendships = array_unique(
                                     array_intersect(
                                         array_merge($user1['recipients'], $user1['senders']),
@@ -521,7 +521,7 @@ trait Friendable
     {
         return $this->morphMany(FriendFriendshipGroups::class, 'friend');
     }
-    
+
     protected function getOrPaginate($builder, $perPage)
     {
         if ($perPage == 0) {
