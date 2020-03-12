@@ -16,6 +16,8 @@ class FriendshipsEventsTest extends TestCase
     {
         parent::setUp();
 
+        Event::fake();
+        
         $this->sender    = createUser();
         $this->recipient = createUser();
     }
