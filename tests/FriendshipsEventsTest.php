@@ -28,7 +28,7 @@ class FriendshipsEventsTest extends TestCase
     /** @test */
     public function friend_request_is_sent()
     {
-        Event::shouldReceive('dispatch')->once()->withArgs(['friendships.sent', Mockery::any()]);
+        Event::assertDispatched('friendships.sent');
 
         $this->sender->befriend($this->recipient);
     }
@@ -37,7 +37,7 @@ class FriendshipsEventsTest extends TestCase
     public function friend_request_is_accepted()
     {
         $this->sender->befriend($this->recipient);
-        Event::shouldReceive('dispatch')->once()->withArgs(['friendships.accepted', Mockery::any()]);
+        Event::assertDispatched('friendships.accepted');
 
         $this->recipient->acceptFriendRequest($this->sender);
     }
@@ -46,7 +46,7 @@ class FriendshipsEventsTest extends TestCase
     public function friend_request_is_denied()
     {
         $this->sender->befriend($this->recipient);
-        Event::shouldReceive('dispatch')->once()->withArgs(['friendships.denied', Mockery::any()]);
+        Event::assertDispatched('friendships.denied');
 
         $this->recipient->denyFriendRequest($this->sender);
     }
@@ -56,7 +56,7 @@ class FriendshipsEventsTest extends TestCase
     {
         $this->sender->befriend($this->recipient);
         $this->recipient->acceptFriendRequest($this->sender);
-        Event::shouldReceive('dispatch')->once()->withArgs(['friendships.blocked', Mockery::any()]);
+        Event::assertDispatched('friendships.blocked');
 
         $this->recipient->blockFriend($this->sender);
     }
@@ -67,7 +67,7 @@ class FriendshipsEventsTest extends TestCase
         $this->sender->befriend($this->recipient);
         $this->recipient->acceptFriendRequest($this->sender);
         $this->recipient->blockFriend($this->sender);
-        Event::shouldReceive('dispatch')->once()->withArgs(['friendships.unblocked', Mockery::any()]);
+        Event::assertDispatched('friendships.unblocked');
 
         $this->recipient->unblockFriend($this->sender);
     }
@@ -77,7 +77,7 @@ class FriendshipsEventsTest extends TestCase
     {
         $this->sender->befriend($this->recipient);
         $this->recipient->acceptFriendRequest($this->sender);
-        Event::shouldReceive('dispatch')->once()->withArgs(['friendships.cancelled', Mockery::any()]);
+        Event::assertDispatched('friendships.cancelled');
 
         $this->recipient->unfriend($this->sender);
     }
