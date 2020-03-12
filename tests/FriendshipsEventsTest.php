@@ -30,27 +30,27 @@ class FriendshipsEventsTest extends TestCase
     /** @test */
     public function friend_request_is_sent()
     {
-        Event::assertDispatched('friendships.sent');
-
         $this->sender->befriend($this->recipient);
+
+        Event::assertDispatched('friendships.sent');
     }
 
     /** @test */
     public function friend_request_is_accepted()
     {
         $this->sender->befriend($this->recipient);
-        Event::assertDispatched('friendships.accepted');
-
         $this->recipient->acceptFriendRequest($this->sender);
+
+        Event::assertDispatched('friendships.accepted');
     }
 
     /** @test */
     public function friend_request_is_denied()
     {
         $this->sender->befriend($this->recipient);
-        Event::assertDispatched('friendships.denied');
-
         $this->recipient->denyFriendRequest($this->sender);
+
+        Event::assertDispatched('friendships.denied');
     }
 
     /** @test */
@@ -58,9 +58,9 @@ class FriendshipsEventsTest extends TestCase
     {
         $this->sender->befriend($this->recipient);
         $this->recipient->acceptFriendRequest($this->sender);
-        Event::assertDispatched('friendships.blocked');
-
         $this->recipient->blockFriend($this->sender);
+
+        Event::assertDispatched('friendships.blocked');
     }
 
     /** @test */
@@ -69,9 +69,9 @@ class FriendshipsEventsTest extends TestCase
         $this->sender->befriend($this->recipient);
         $this->recipient->acceptFriendRequest($this->sender);
         $this->recipient->blockFriend($this->sender);
-        Event::assertDispatched('friendships.unblocked');
-
         $this->recipient->unblockFriend($this->sender);
+
+        Event::assertDispatched('friendships.unblocked');
     }
 
     /** @test */
@@ -79,8 +79,8 @@ class FriendshipsEventsTest extends TestCase
     {
         $this->sender->befriend($this->recipient);
         $this->recipient->acceptFriendRequest($this->sender);
-        Event::assertDispatched('friendships.cancelled');
-
         $this->recipient->unfriend($this->sender);
+
+        Event::assertDispatched('friendships.cancelled');
     }
 }
