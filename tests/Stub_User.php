@@ -2,7 +2,7 @@
 
 namespace App;
 
-use Hootlex\Friendships\Traits\Friendable;
+use Cuitcode\Friendships\Traits\Friendable;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Auth\Passwords\CanResetPassword;
