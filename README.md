@@ -1,4 +1,4 @@
-# Laravel 5 Friendships
+# Laravel 8 Friendships
 
 [![Build Status](https://travis-ci.org/cuitcode/laravel-friendships.svg?branch=v1.0.21)](https://travis-ci.org/cuitcode/laravel-friendships) [![Code Climate](https://codeclimate.com/github/cuitcode/laravel-friendships/badges/gpa.svg)](https://codeclimate.com/github/cuitcode/laravel-friendships) [![Test Coverage](https://codeclimate.com/github/cuitcode/laravel-friendships/badges/coverage.svg)](https://codeclimate.com/github/cuitcode/laravel-friendships/coverage) [![Total Downloads](https://img.shields.io/packagist/dt/cuitcode/laravel-friendships.svg?style=flat)](https://packagist.org/packages/cuitcode/laravel-friendships) [![Version](https://img.shields.io/packagist/v/cuitcode/laravel-friendships.svg?style=flat)](https://packagist.org/packages/cuitcode/laravel-friendships) [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat)](LICENSE) [![Join the chat at https://gitter.im/laravel-friendships/Lobby](https://badges.gitter.im/laravel-friendships/Lobby.svg)](https://gitter.im/laravel-friendships/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
