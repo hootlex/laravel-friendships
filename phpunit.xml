@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" backupGlobals="false" backupStaticAttributes="false" colors="true" convertErrorsToExceptions="true" convertNoticesToExceptions="true" convertWarningsToExceptions="true" processIsolation="false" stopOnFailure="false" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd">
-  <coverage includeUncoveredFiles="true" processUncoveredFiles="true">
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  colors="true" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd" 
+  bootstrap="vendor/autoload.php">
+  <coverage includeUncoveredFiles="false" processUncoveredFiles="false">
     <include>
       <directory suffix=".php">./src</directory>
     </include>
@@ -11,17 +13,24 @@
       <file>src/FriendshipsServiceProvider.php</file>
     </exclude>
     <report>
-      <clover outputFile="build/logs/clover.xml"/>
+      <clover outputFile="build/logs/clover.xml" />
     </report>
   </coverage>
   <testsuites>
-    <testsuite name="Application Test Suite">
+    <testsuite name="Feature">
       <directory suffix="Test.php">./tests</directory>
     </testsuite>
   </testsuites>
   <php>
-    <env name="APP_KEY" value="AckfSECXIvnK5r28GVIWUAxmbBSjTsmF"/>
-    <env name="DB_CONNECTION" value="testing"/>
+    <env name="APP_KEY" value="testing" />
+    <env name="APP_ENV" value="testing" />
+    <env name="DB_CONNECTION" value="sqlite" />
+    <!-- <env name="DB_DATABASE" value="sqlite" /> -->
+    <env name="DB_DATABASE" value=":memory:" />
+    <env name="BCRYPT_ROUNDS" value="4"/>
+    <env name="CACHE_DRIVER" value="array"/>
+    <env name="MAIL_DRIVER" value="array"/>
+    <env name="QUEUE_CONNECTION" value="sync"/>
+    <env name="SESSION_DRIVER" value="array"/>
   </php>
-  <logging/>
 </phpunit>

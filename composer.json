@@ -35,7 +35,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Cuitcode\\Friendships\\": "src/"
+            "Cuitcode\\Friendships\\": "src"
         }
     },
     "scripts": {
