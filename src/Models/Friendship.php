@@ -1,17 +1,16 @@
 <?php
 
-namespace Hootlex\Friendships\Models;
+namespace Cuitcode\Friendships\Models;
 
-use Hootlex\Friendships\Status;
+use Cuitcode\Friendships\Status;
 use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class Friendship
- * @package Hootlex\Friendships\Models
+ * @package Cuitcode\Friendships\Models
  */
 class Friendship extends Model
 {
-
     /**
      * @var array
      */
@@ -20,7 +19,7 @@ class Friendship extends Model
     /**
      * @param array $attributes
      */
-    public function __construct(array $attributes = array())
+    public function __construct(array $attributes = [])
     {
         $this->table = config('friendships.tables.fr_pivot');
 
@@ -46,7 +45,8 @@ class Friendship extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\hasMany
      */
-    public function groups() {
+    public function groups()
+    {
         return $this->hasMany(FriendFriendshipGroups::class, 'friendship_id');
     }
 
@@ -92,13 +92,11 @@ class Friendship extends Model
      */
     public function scopeWhereGroup($query, $model, $groupSlug)
     {
-
-        $groupsPivotTable   = config('friendships.tables.fr_groups_pivot');
-        $friendsPivotTable  = config('friendships.tables.fr_pivot');
+        $groupsPivotTable = config('friendships.tables.fr_groups_pivot');
+        $friendsPivotTable = config('friendships.tables.fr_pivot');
         $groupsAvailable = config('friendships.groups', []);
 
         if ('' !== $groupSlug && isset($groupsAvailable[$groupSlug])) {
-
             $groupId = $groupsAvailable[$groupSlug];
 
             $query->join($groupsPivotTable, function ($join) use ($groupsPivotTable, $friendsPivotTable, $groupId, $model) {
@@ -110,11 +108,9 @@ class Friendship extends Model
                     })
                     ->orWhere($groupsPivotTable . '.friend_type', '!=', $model->getMorphClass());
             });
-
         }
 
         return $query;
-
     }
 
     /**
@@ -125,7 +121,7 @@ class Friendship extends Model
      */
     public function scopeBetweenModels($query, $sender, $recipient)
     {
-        $query->where(function ($queryIn) use ($sender, $recipient){
+        $query->where(function ($queryIn) use ($sender, $recipient) {
             $queryIn->where(function ($q) use ($sender, $recipient) {
                 $q->whereSender($sender)->whereRecipient($recipient);
             })->orWhere(function ($q) use ($sender, $recipient) {
