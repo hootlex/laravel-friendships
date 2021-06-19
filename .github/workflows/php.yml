@@ -14,6 +14,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    - with:
+        php-version: '7.3'
 
     - name: Validate composer.json and composer.lock
       run: composer validate --strict
@@ -23,7 +25,6 @@ jobs:
       uses: actions/cache@v2
       with:
         path: vendor
-        php-version: '7.3'
         key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
         restore-keys: |
           ${{ runner.os }}-php-
