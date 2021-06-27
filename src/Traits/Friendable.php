@@ -241,6 +241,17 @@ trait Friendable
     }
 
     /**
+     * @return int
+     *
+     * @param string $groupSlug
+     *
+     */
+    public function getPendingsCount($groupSlug = '')
+    {
+        return $this->findFriendships(Status::PENDING, $groupSlug)->count();
+    }
+
+    /**
      * @return \Illuminate\Database\Eloquent\Collection|Friendship[]
      *
      * @param string $groupSlug
