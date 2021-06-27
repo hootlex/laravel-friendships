@@ -1,27 +1,32 @@
 <?php
 
-namespace Hootlex\Friendships\Traits;
+namespace Cuitcode\Friendships\Traits;
 
-use Hootlex\Friendships\Models\Friendship;
-use Hootlex\Friendships\Models\FriendFriendshipGroups;
-use Hootlex\Friendships\Status;
-use Illuminate\Database\Eloquent\Model;
+use Cuitcode\Friendships\Status;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Database\Eloquent\Model;
+use Cuitcode\Friendships\Models\Friendship;
+use Cuitcode\Friendships\Events\FriendshipsSent;
+use Cuitcode\Friendships\Events\FriendshipsDenied;
+use Cuitcode\Friendships\Events\FriendshipsBlocked;
+use Cuitcode\Friendships\Events\FriendshipsAccepted;
+use Cuitcode\Friendships\Events\FriendshipsCancelled;
+use Cuitcode\Friendships\Events\FriendshipsUnblocked;
+use Cuitcode\Friendships\Models\FriendFriendshipGroups;
 
 /**
  * Class Friendable
- * @package Hootlex\Friendships\Traits
+ * @package Cuitcode\Friendships\Traits
  */
 trait Friendable
 {
     /**
      * @param Model $recipient
      *
-     * @return \Hootlex\Friendships\Models\Friendship|false
+     * @return \Cuitcode\Friendships\Models\Friendship|false
      */
     public function befriend(Model $recipient)
     {
-
         if (!$this->canBefriend($recipient)) {
             return false;
         }
@@ -31,11 +36,10 @@ trait Friendable
         ]);
 
         $this->friends()->save($friendship);
-      
-        Event::fire('friendships.sent', [$this, $recipient]);
+
+        FriendshipsSent::dispatch($this, $recipient);
 
         return $friendship;
-
     }
 
     /**
@@ -47,7 +51,7 @@ trait Friendable
     {
         $deleted = $this->findFriendship($recipient)->delete();
 
-        Event::fire('friendships.cancelled', [$this, $recipient]);
+        FriendshipsCancelled::dispatch($this, $recipient);
 
         return $deleted;
     }
@@ -93,8 +97,8 @@ trait Friendable
             'status' => Status::ACCEPTED,
         ]);
 
-        Event::fire('friendships.accepted', [$this, $recipient]);
-      
+        FriendshipsAccepted::dispatch($this, $recipient);
+
         return $updated;
     }
 
@@ -109,11 +113,10 @@ trait Friendable
             'status' => Status::DENIED,
         ]);
 
-        Event::fire('friendships.denied', [$this, $recipient]);
-      
+        FriendshipsDenied::dispatch($this, $recipient);
+
         return $updated;
     }
-
 
     /**
      * @param Model $friend
@@ -122,23 +125,21 @@ trait Friendable
      */
     public function groupFriend(Model $friend, $groupSlug)
     {
-
-        $friendship       = $this->findFriendship($friend)->whereStatus(Status::ACCEPTED)->first();
+        $friendship = $this->findFriendship($friend)->whereStatus(Status::ACCEPTED)->first();
         $groupsAvailable = config('friendships.groups', []);
 
         if (!isset($groupsAvailable[$groupSlug]) || empty($friendship)) {
-                    return false;
+            return false;
         }
 
         $group = $friendship->groups()->firstOrCreate([
             'friendship_id' => $friendship->id,
-            'group_id'      => $groupsAvailable[$groupSlug],
-            'friend_id'     => $friend->getKey(),
-            'friend_type'   => $friend->getMorphClass(),
+            'group_id' => $groupsAvailable[$groupSlug],
+            'friend_id' => $friend->getKey(),
+            'friend_type' => $friend->getMorphClass(),
         ]);
 
         return $group->wasRecentlyCreated;
-
     }
 
     /**
@@ -148,18 +149,17 @@ trait Friendable
      */
     public function ungroupFriend(Model $friend, $groupSlug = '')
     {
-
-        $friendship       = $this->findFriendship($friend)->first();
+        $friendship = $this->findFriendship($friend)->first();
         $groupsAvailable = config('friendships.groups', []);
 
         if (empty($friendship)) {
-                    return false;
+            return false;
         }
 
         $where = [
             'friendship_id' => $friendship->id,
-            'friend_id'     => $friend->getKey(),
-            'friend_type'   => $friend->getMorphClass(),
+            'friend_id' => $friend->getKey(),
+            'friend_type' => $friend->getMorphClass(),
         ];
 
         if ('' !== $groupSlug && isset($groupsAvailable[$groupSlug])) {
@@ -169,13 +169,12 @@ trait Friendable
         $result = $friendship->groups()->where($where)->delete();
 
         return $result;
-
     }
 
     /**
      * @param Model $recipient
      *
-     * @return \Hootlex\Friendships\Models\Friendship
+     * @return \Cuitcode\Friendships\Models\Friendship
      */
     public function blockFriend(Model $recipient)
     {
@@ -188,10 +187,10 @@ trait Friendable
         $friendship = (new Friendship)->fillRecipient($recipient)->fill([
             'status' => Status::BLOCKED,
         ]);
-      
+
         $this->friends()->save($friendship);
 
-        Event::fire('friendships.blocked', [$this, $recipient]);
+        FriendshipsBlocked::dispatch($this, $recipient);
 
         return $friendship;
     }
@@ -204,16 +203,15 @@ trait Friendable
     public function unblockFriend(Model $recipient)
     {
         $deleted = $this->findFriendship($recipient)->whereSender($this)->delete();
+        FriendshipsUnblocked::dispatch($this, $recipient);
 
-        Event::fire('friendships.unblocked', [$this, $recipient]);
-      
         return $deleted;
     }
 
     /**
      * @param Model $recipient
      *
-     * @return \Hootlex\Friendships\Models\Friendship
+     * @return \Cuitcode\Friendships\Models\Friendship
      */
     public function getFriendship(Model $recipient)
     {
@@ -240,6 +238,17 @@ trait Friendable
     public function getPendingFriendships($groupSlug = '')
     {
         return $this->findFriendships(Status::PENDING, $groupSlug)->get();
+    }
+
+    /**
+     * @return int
+     *
+     * @param string $groupSlug
+     *
+     */
+    public function getPendingsCount($groupSlug = '')
+    {
+        return $this->findFriendships(Status::PENDING, $groupSlug)->count();
     }
 
     /**
@@ -312,7 +321,7 @@ trait Friendable
     {
         return $this->getOrPaginate($this->getFriendsQueryBuilder($groupSlug), $perPage);
     }
-    
+
     /**
      * This method will not return Friendship models
      * It will return the 'friends' models. ex: App\User
@@ -325,7 +334,7 @@ trait Friendable
     {
         return $this->getOrPaginate($this->getMutualFriendsQueryBuilder($other), $perPage);
     }
-    
+
     /**
      * Get the number of friends
      *
@@ -349,7 +358,6 @@ trait Friendable
         return $this->getOrPaginate($this->friendsOfFriendsQueryBuilder(), $perPage);
     }
 
-
     /**
      * Get the number of friends
      *
@@ -360,6 +368,7 @@ trait Friendable
     public function getFriendsCount($groupSlug = '')
     {
         $friendsCount = $this->findFriendships(Status::ACCEPTED, $groupSlug)->count();
+
         return $friendsCount;
     }
 
@@ -374,6 +383,7 @@ trait Friendable
         // he can send a friend request after unblocking
         if ($this->hasBlocked($recipient)) {
             $this->unblockFriend($recipient);
+
             return true;
         }
 
@@ -384,6 +394,7 @@ trait Friendable
                 return false;
             }
         }
+
         return true;
     }
 
@@ -405,7 +416,6 @@ trait Friendable
      */
     private function findFriendships($status = null, $groupSlug = '')
     {
-
         $query = Friendship::where(function ($query) {
             $query->where(function ($q) {
                 $q->whereSender($this);
@@ -431,14 +441,13 @@ trait Friendable
      */
     private function getFriendsQueryBuilder($groupSlug = '')
     {
-
         $friendships = $this->findFriendships(Status::ACCEPTED, $groupSlug)->get(['sender_id', 'recipient_id']);
-        $recipients  = $friendships->pluck('recipient_id')->all();
-        $senders     = $friendships->pluck('sender_id')->all();
+        $recipients = $friendships->pluck('recipient_id')->all();
+        $senders = $friendships->pluck('sender_id')->all();
 
         return $this->where('id', '!=', $this->getKey())->whereIn('id', array_merge($recipients, $senders));
     }
-    
+
     /**
      * Get the query builder of the 'friend' model
      *
@@ -449,17 +458,17 @@ trait Friendable
         $user1['friendships'] = $this->findFriendships(Status::ACCEPTED)->get(['sender_id', 'recipient_id']);
         $user1['recipients'] = $user1['friendships']->pluck('recipient_id')->all();
         $user1['senders'] = $user1['friendships']->pluck('sender_id')->all();
-        
+
         $user2['friendships'] = $other->findFriendships(Status::ACCEPTED)->get(['sender_id', 'recipient_id']);
         $user2['recipients'] = $user2['friendships']->pluck('recipient_id')->all();
         $user2['senders'] = $user2['friendships']->pluck('sender_id')->all();
-        
+
         $mutualFriendships = array_unique(
-                                    array_intersect(
-                                        array_merge($user1['recipients'], $user1['senders']),
-                                        array_merge($user2['recipients'], $user2['senders'])
-                                    )
-                                );
+            array_intersect(
+                array_merge($user1['recipients'], $user1['senders']),
+                array_merge($user2['recipients'], $user2['senders'])
+            )
+        );
 
         return $this->whereNotIn('id', [$this->getKey(), $other->getKey()])->whereIn('id', $mutualFriendships);
     }
@@ -478,7 +487,6 @@ trait Friendable
         $senders = $friendships->pluck('sender_id')->all();
 
         $friendIds = array_unique(array_merge($recipients, $senders));
-
 
         $fofs = Friendship::where('status', Status::ACCEPTED)
                             ->where(function ($query) use ($friendIds) {
@@ -502,7 +510,6 @@ trait Friendable
 //            })->flatten()->all()
 //        );
 
-
         return $this->whereIn('id', $fofIds)->whereNotIn('id', $friendIds);
     }
 
@@ -521,12 +528,13 @@ trait Friendable
     {
         return $this->morphMany(FriendFriendshipGroups::class, 'friend');
     }
-    
+
     protected function getOrPaginate($builder, $perPage)
     {
         if ($perPage == 0) {
             return $builder->get();
         }
+
         return $builder->paginate($perPage);
     }
 }
