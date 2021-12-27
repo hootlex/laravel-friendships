@@ -21,17 +21,17 @@
         }
     },
     "require": {
-        "php": "^7.3"
+        "php": "^8.0"
     },
     "require-dev": {
         "phpunit/phpunit" : "^9.3",
-        "fzaninotto/faker": "^1.9.1",
         "laravel/laravel": "^8.0",
         "symfony/console": "^5.2.0",
         "mockery/mockery": "^1.4.2",
         "doctrine/dbal": "^2.5",
         "orchestra/testbench": "^6.18",
-        "phpunit/php-code-coverage": "^9.2"
+        "phpunit/php-code-coverage": "^9.2",
+        "fakerphp/faker": "^1.17"
     },
     "autoload": {
         "psr-4": {
